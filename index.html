@@ -10,9 +10,10 @@
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 48% -20%,#293b33 0,transparent 54%),var(--bg);color:var(--ink);font:15px/1.65 system-ui,"Microsoft JhengHei",sans-serif;min-height:100vh}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .shell{max-width:1240px;margin:auto;padding:0 42px}header{height:74px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.brand{font:700 24px var(--serif);letter-spacing:.17em;display:flex;gap:12px;align-items:center}.brand-icon{width:31px;height:31px;display:grid;place-items:center;border:1px solid #ac966e;border-radius:50%;color:var(--gold);font:17px var(--serif);letter-spacing:0}.top-right{display:flex;align-items:center;gap:16px}.save{color:var(--green);font-size:12px}.ghost,.tab{background:transparent;border:1px solid var(--line);border-radius:7px;padding:7px 12px;color:var(--soft)}.ghost:hover,.tab:hover{border-color:var(--gold);color:var(--gold)}
 .hero{margin:24px 0 16px;position:relative;min-height:230px;display:flex;align-items:center;overflow:hidden;border:1px solid #586153;border-radius:14px;background:#304038}.hero svg{position:absolute;width:100%;height:100%;inset:0;pointer-events:none}.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#18231ff5 0%,#18231fd9 27%,transparent 76%);pointer-events:none}.hero-copy{z-index:1;padding:25px 31px;position:relative}.eyebrow{font-size:11px;letter-spacing:.2em;color:var(--gold);font-weight:700}.hero h1{font:700 clamp(29px,5vw,55px)/1.2 var(--serif);letter-spacing:.11em;margin:9px 0 7px}.hero p{margin:0;color:#d6e0d2;font-size:14px}.hero-place{z-index:1;position:absolute;right:20px;bottom:15px;background:#162522da;border:1px solid #718576;border-radius:5px;padding:4px 10px;color:#d2dfce;font-size:12px}.hero.snow{background:#334650}.hero.snow svg{filter:hue-rotate(25deg) saturate(.68)}.hero.snow::after{background:linear-gradient(90deg,#1a252af7 0%,#1a252ada 27%,transparent 76%)}
-.tabs{display:flex;gap:10px;margin-bottom:14px}.tab[aria-selected=true]{color:var(--gold);border-color:#857050;background:#352e24}.layout{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(280px,1fr);gap:16px;align-items:start}.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:20px 23px;margin-bottom:13px}.card h2,.card h3{font-family:var(--serif);letter-spacing:.075em;margin:3px 0 7px}.card h2{font-size:28px}.card h3{font-size:18px}.event>p{color:var(--soft);margin:0 0 15px}.choices{display:grid;gap:8px}.choice{display:grid;grid-template-columns:33px 1fr auto;gap:10px;align-items:center;text-align:left;background:#222e2b;border:1px solid #3d4b44;border-radius:7px;padding:9px 11px;width:100%}.choice:hover:not(:disabled){background:#33382c;border-color:#ae9265}.choice:disabled{opacity:.53;cursor:default}.choice strong,.choice small{display:block}.choice small{color:var(--soft);font-size:12px}.choice i{font-style:normal;color:var(--gold)}.key{display:grid;place-items:center;width:27px;height:27px;border-radius:4px;background:#38392d;color:var(--gold);font-size:12px}.result{padding:10px 13px;border-left:2px solid var(--gold);background:#2c3028;margin:0 0 15px;color:#e3d6b9;font-size:13px}
+.tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}.tab[aria-selected=true]{color:var(--gold);border-color:#857050;background:#352e24}.layout{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(280px,1fr);gap:16px;align-items:start}.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:20px 23px;margin-bottom:13px}.card h2,.card h3{font-family:var(--serif);letter-spacing:.075em;margin:3px 0 7px}.card h2{font-size:28px}.card h3{font-size:18px}.event>p{color:var(--soft);margin:0 0 15px}.choices{display:grid;gap:8px}.choice{display:grid;grid-template-columns:33px 1fr auto;gap:10px;align-items:center;text-align:left;background:#222e2b;border:1px solid #3d4b44;border-radius:7px;padding:9px 11px;width:100%}.choice:hover:not(:disabled){background:#33382c;border-color:#ae9265}.choice:disabled{opacity:.53;cursor:default}.choice strong,.choice small{display:block}.choice small{color:var(--soft);font-size:12px}.choice i{font-style:normal;color:var(--gold)}.key{display:grid;place-items:center;width:27px;height:27px;border-radius:4px;background:#38392d;color:var(--gold);font-size:12px}.result{padding:10px 13px;border-left:2px solid var(--gold);background:#2c3028;margin:0 0 15px;color:#e3d6b9;font-size:13px}
 .profile{display:flex;align-items:center;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--line)}.avatar{width:43px;height:43px;display:grid;place-items:center;border-radius:50%;background:#3c432e;color:#f4d39d;font:22px var(--serif);flex:none}.profile h3{margin:0}.muted,.profile p{color:var(--soft);font-size:12px;margin:0}.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}.stat{border:1px solid #33423b;border-radius:6px;background:#202b27;padding:6px 9px}.stat span{display:block;color:var(--soft);font-size:11px}.stat strong{font-size:16px;color:#e4decf}.world{display:flex;justify-content:space-between;gap:12px;align-items:center}.world strong{color:var(--green);font-size:13px}.world p{margin:0}.person,.log{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line)}.person:last-child,.log:last-child{border:0}.person p,.log p{margin:0}.badge{font-size:11px;display:inline-block;padding:2px 7px;border:1px solid #5d6550;border-radius:4px;color:var(--gold);white-space:nowrap}.log time{color:var(--gold);font-size:12px;min-width:53px}.region{border-top:1px solid var(--line);padding:12px 0}.region p{margin:2px 0;color:var(--soft)}.region:last-child{padding-bottom:0}footer{color:#a5b1a5;font-size:11px;padding:4px 0 20px;letter-spacing:.04em}dialog{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:23px;max-width:calc(100% - 30px)}dialog::backdrop{background:#000a}dialog h2{margin:0;font:24px var(--serif)}dialog button{margin-right:7px}
 @media(max-width:760px){.shell{padding:0 15px}header{height:61px}.brand{font-size:19px}.top-right{gap:7px}.save{display:none}.hero{min-height:192px;margin-top:16px}.hero-copy{padding:20px}.hero-place{bottom:8px;right:8px}.layout{grid-template-columns:1fr}.card{padding:15px}.tabs{gap:6px}.tab{padding:5px 9px}.card h2{font-size:24px}}
+.atlas-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.atlas-fields label{display:grid;gap:4px;color:var(--soft);font-size:13px}.atlas-fields select,.atlas-fields input{min-width:0;width:100%;font:inherit;color:var(--ink);background:#222e2b;border:1px solid #526059;border-radius:6px;padding:8px}.atlas-wide{grid-column:1/-1}.atlas-note{margin:8px 0;color:var(--soft);font-size:13px}.atlas-sources{margin-top:16px;padding-top:10px;border-top:1px solid var(--line)}.atlas-sources a{color:var(--gold)}.atlas-sources summary{cursor:pointer}.atlas-preview{padding:12px;background:#222e2b;border:1px solid #526059;border-radius:7px}.atlas-preview p{margin:6px 0}.atlas-preview button{margin-top:5px}.atlas-preview button:disabled{opacity:.55;cursor:default}
 </style>
 </head>
 <body>
@@ -24,7 +25,7 @@
 <path fill="url(#sky)" d="M0 0h1200v260H0z"/><circle cx="964" cy="74" r="43" fill="#f5cd92" opacity=".9"/><path fill="#668176" d="m0 153 159-47 135 31 122-44 112 47 156-76 111 67 68-47 137 65 93-58 107 42v127H0z"/><path fill="#3f6159" d="m0 181 129-22 94 23 159-58 167 52 111-22 109 22 147-48 113 23 171-31v140H0z"/><path fill="url(#sea)" d="M0 177h1200v83H0z"/><path fill="none" stroke="#d0af7b" opacity=".42" d="M868 188h182m-107 11h66m-165 9h85m55 5h115m-198 11h114m-153 12h155"/><g fill="#233c37"><path d="M0 172h397l112 25 132 37 107 26H0z"/><path d="M572 185v-32h23v-13h21v45zm53 0v-51h22v-21h27v72zm60 0v-34h22v-16h23v50zm57 0v-37h21v37zm29 0v-27h29v27zm39 0v-48h19v-13h16v61zm49 0v-28h27v28zm41 0v-22h36v22zm46 0v-36h16v36zm34 0v-29h28v29zm48 0v-18h21v18zm30 0v-46h25v46zm38 0v-34h22v34zm30 0v-25h23v25zm33 0v-41h42v41z"/><path d="M683 183h517v5H683z"/></g><path fill="url(#windows)" d="M628 135h44v49h-44zm58 19h40v28h-40zm125-15h32v44h-32zm249 3h21v40h-21zm101 7h37v34h-37z"/><path fill="none" stroke="#d9b981" opacity=".63" d="M728 249q155-28 309-49l163-12m-464 66q155-29 301-49l163-12m-373 39v-21m0 0q42 16 87-15 48 15 92-15m-92 38v-23m92 9v-24"/>
 </svg>
 <div class="hero-copy"><div class="eyebrow" id="chapter"></div><h1 id="headline"></h1><p id="subtitle"></p></div><span class="hero-place" id="place"></span></section>
-<nav class="tabs" aria-label="遊戲畫面"><button class="tab" data-tab="life" aria-selected="true">人生抉擇</button><button class="tab" data-tab="family" aria-selected="false">家族樹</button><button class="tab" data-tab="journal" aria-selected="false">家族紀事</button><button class="tab" data-tab="world" aria-selected="false">世界圖鑑</button></nav>
+<nav class="tabs" aria-label="遊戲畫面"><button class="tab" data-tab="life" aria-selected="true">人生抉擇</button><button class="tab" data-tab="family" aria-selected="false">家族樹</button><button class="tab" data-tab="journal" aria-selected="false">家族紀事</button><button class="tab" data-tab="world" aria-selected="false">世界圖鑑</button><button class="tab" data-tab="jianghu" aria-selected="false">武俠圖鑑</button></nav>
 <main class="layout"><div id="content" aria-live="polite"></div><aside id="sidebar" aria-label="主角與世界狀態"></aside></main>
 <footer>人生長卷・可玩原型　｜　地方、制度與事件為虛構模擬　｜　存檔保留於此瀏覽器</footer>
 </div>
@@ -44,6 +45,180 @@ const cycles = [
   {name:'景氣降溫', detail:'訂單下滑，風險部位可能帶來虧損。', market:-3},
   {name:'逐步復甦', detail:'企業恢復招募，投資報酬回升。', market:2}
 ];
+const jianghuCatalog = [
+{"id":"jx-001","book":"越女劍","era":"春秋","kind":"政權","name":"越國","places":[["都城","會稽"]]},
+{"id":"jx-002","book":"越女劍","era":"春秋","kind":"政權","name":"吳國","places":[["都城","姑蘇"]]},
+{"id":"jx-003","book":"越女劍","era":"春秋","kind":"政權","name":"楚國","places":[["相關","楚地"]]},
+{"id":"jx-004","book":"越女劍","era":"春秋","kind":"政權","name":"晉國","places":[["相關","晉地"]]},
+{"id":"jx-005","book":"越女劍","era":"春秋","kind":"政權","name":"齊國","places":[["相關","齊地"]]},
+{"id":"jx-006","book":"白馬嘯西風","era":"西域往事","kind":"政權","name":"高昌國","places":[["都城","高昌故城"],["遺跡","高昌迷宮"]]},
+{"id":"jx-007","book":"白馬嘯西風","era":"西域往事","kind":"政權","name":"唐朝","places":[["都城","長安"]]},
+{"id":"jx-008","book":"白馬嘯西風","era":"西域故事","kind":"地方社群","name":"哈薩克鐵延部","places":[["據點","鐵延部營地"]]},
+{"id":"jx-009","book":"白馬嘯西風","era":"西域故事","kind":"江湖組織","name":"呂梁三傑一夥","places":[["相關","呂梁山"],["活動","大漠"]]},
+{"id":"jx-010","book":"天龍八部","era":"北宋","kind":"政權","name":"北宋","places":[["都城","東京汴梁"],["城市","洛陽"],["城市","蘇州"],["城市","無錫"],["城市","信陽"],["關隘","雁門關"]]},
+{"id":"jx-011","book":"天龍八部","era":"北宋","kind":"政權","name":"大理國","places":[["都城","大理"],["境內據點","天龍寺"],["境內據點","無量山"]]},
+{"id":"jx-012","book":"天龍八部","era":"北宋","kind":"政權","name":"大遼","places":[["都城","上京臨潢府"],["陪都","南京析津府（燕京）"],["境內據點","南院大王府"]]},
+{"id":"jx-013","book":"天龍八部","era":"北宋","kind":"政權","name":"西夏","places":[["都城","興慶府"],["境內據點","西夏皇宮"]]},
+{"id":"jx-014","book":"天龍八部","era":"北宋","kind":"政權","name":"吐蕃","places":[["相關","吐蕃"],["據點","大輪寺"]]},
+{"id":"jx-015","book":"天龍八部","era":"北宋","kind":"地方勢力","name":"女真完顏部","places":[["相關","長白山一帶"]]},
+{"id":"jx-016","book":"天龍八部","era":"北宋","kind":"復國勢力","name":"姑蘇慕容氏（復燕）","places":[["據點","參合莊"],["據點","燕子塢"]]},
+{"id":"jx-017","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"西夏一品堂","places":[["相關","西夏皇宮"]]},
+{"id":"jx-018","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"逍遙派","places":[["據點","擂鼓山聾啞谷"]]},
+{"id":"jx-019","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"靈鷲宮","places":[["據點","天山縹緲峰"]]},
+{"id":"jx-020","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"三十六洞、七十二島","places":[["活動","萬仙大會會場"],["相關","天山縹緲峰"]]},
+{"id":"jx-021","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"星宿派","places":[["據點","星宿海"]]},
+{"id":"jx-022","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"少林派","places":[["據點","嵩山少林寺"]]},
+{"id":"jx-023","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"丐幫","places":[["活動","無錫杏子林"],["活動","洛陽"]]},
+{"id":"jx-024","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"無量劍派","places":[["據點","無量山劍湖宮"]]},
+{"id":"jx-025","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"神農幫","places":[["活動","無量山"]]},
+{"id":"jx-026","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"段氏武林一脈","places":[["據點","鎮南王府"],["相關","天龍寺"]]},
+{"id":"jx-027","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"四大惡人","places":[["相關","萬劫谷"]]},
+{"id":"jx-028","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"鍾氏一脈","places":[["據點","萬劫谷"]]},
+{"id":"jx-029","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"聚賢莊游氏","places":[["據點","聚賢莊"]]},
+{"id":"jx-030","book":"天龍八部","era":"北宋","kind":"江湖組織","name":"王氏一脈","places":[["據點","曼陀山莊"]]},
+{"id":"jx-031","book":"射鵰英雄傳","era":"南宋","kind":"政權","name":"南宋","places":[["都城","臨安"],["城市","嘉興"],["境內據點","牛家村"]]},
+{"id":"jx-032","book":"射鵰英雄傳","era":"南宋","kind":"政權","name":"金國","places":[["都城","中都"],["境內據點","趙王府"]]},
+{"id":"jx-033","book":"射鵰英雄傳","era":"南宋","kind":"政權","name":"蒙古","places":[["據點","鐵木真大營"],["活動","蒙古草原"]]},
+{"id":"jx-034","book":"射鵰英雄傳","era":"南宋","kind":"政權","name":"花剌子模","places":[["城市","撒麻耳干（撒麻爾罕）"]]},
+{"id":"jx-035","book":"射鵰英雄傳","era":"南宋","kind":"政權","name":"大理國","places":[["都城","大理"]]},
+{"id":"jx-036","book":"射鵰英雄傳","era":"南宋","kind":"政權","name":"西夏","places":[["相關","西夏"]]},
+{"id":"jx-037","book":"射鵰英雄傳","era":"南宋","kind":"江湖組織","name":"全真教","places":[["據點","終南山重陽宮"]]},
+{"id":"jx-038","book":"射鵰英雄傳","era":"南宋","kind":"江湖組織","name":"丐幫","places":[["活動","岳陽樓"],["活動","君山"]]},
+{"id":"jx-039","book":"射鵰英雄傳","era":"南宋","kind":"江湖組織","name":"桃花島一脈","places":[["據點","桃花島"],["據點","歸雲莊"]]},
+{"id":"jx-040","book":"射鵰英雄傳","era":"南宋","kind":"江湖組織","name":"白駝山一脈","places":[["據點","白駝山"]]},
+{"id":"jx-041","book":"射鵰英雄傳","era":"南宋","kind":"江湖組織","name":"江南七怪","places":[["相關","嘉興"],["活動","蒙古草原"]]},
+{"id":"jx-042","book":"射鵰英雄傳","era":"南宋","kind":"江湖組織","name":"黃河幫","places":[["活動","黃河流域"]]},
+{"id":"jx-043","book":"射鵰英雄傳","era":"南宋","kind":"江湖組織","name":"鐵掌幫","places":[["據點","鐵掌峰"]]},
+{"id":"jx-044","book":"射鵰英雄傳","era":"南宋","kind":"江湖組織","name":"一燈門下","places":[["據點","一燈隱居處"]]},
+{"id":"jx-045","book":"神鵰俠侶","era":"南宋末","kind":"政權","name":"南宋","places":[["都城","臨安"],["城市","襄陽"],["城市","嘉興"]]},
+{"id":"jx-046","book":"神鵰俠侶","era":"南宋末","kind":"政權","name":"蒙古","places":[["據點","蒙古大營"],["活動","襄陽城外"]]},
+{"id":"jx-047","book":"神鵰俠侶","era":"南宋末","kind":"政權","name":"大理國","places":[["相關","大理"],["相關","一燈門下"]]},
+{"id":"jx-048","book":"神鵰俠侶","era":"南宋末","kind":"地方勢力","name":"襄陽守軍與郭靖義士","places":[["據點","襄陽城防"]]},
+{"id":"jx-049","book":"神鵰俠侶","era":"南宋末","kind":"江湖組織","name":"古墓派","places":[["據點","終南山活死人墓"]]},
+{"id":"jx-050","book":"神鵰俠侶","era":"南宋末","kind":"江湖組織","name":"全真教","places":[["據點","終南山重陽宮"]]},
+{"id":"jx-051","book":"神鵰俠侶","era":"南宋末","kind":"江湖組織","name":"丐幫","places":[["活動","大勝關陸家莊"],["活動","襄陽"]]},
+{"id":"jx-052","book":"神鵰俠侶","era":"南宋末","kind":"江湖組織","name":"桃花島一脈","places":[["據點","桃花島"]]},
+{"id":"jx-053","book":"神鵰俠侶","era":"南宋末","kind":"江湖組織","name":"公孫氏","places":[["據點","絕情谷"]]},
+{"id":"jx-054","book":"神鵰俠侶","era":"南宋末","kind":"江湖組織","name":"萬獸山莊史氏","places":[["據點","萬獸山莊"]]},
+{"id":"jx-055","book":"神鵰俠侶","era":"南宋末","kind":"江湖組織","name":"西山一窟鬼","places":[["活動","風陵渡一帶"]]},
+{"id":"jx-056","book":"神鵰俠侶","era":"南宋末","kind":"江湖組織","name":"少林派","places":[["據點","嵩山少林寺"]]},
+{"id":"jx-057","book":"倚天屠龍記","era":"元末","kind":"政權","name":"元朝","places":[["都城","大都"],["城市","濠州"],["城市","江州"],["境內據點","萬安寺"]]},
+{"id":"jx-058","book":"倚天屠龍記","era":"元末","kind":"地方勢力","name":"汝陽王府","places":[["據點","大都汝陽王府"],["據點","綠柳山莊"]]},
+{"id":"jx-059","book":"倚天屠龍記","era":"元末","kind":"地方勢力","name":"明教義軍","places":[["活動","濠州"],["活動","蝴蝶谷"]]},
+{"id":"jx-060","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"明教中土總壇","places":[["據點","光明頂"],["據點","蝴蝶谷"],["活動","冰火島"]]},
+{"id":"jx-061","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"波斯明教總教","places":[["相關","波斯"],["活動","靈蛇島海域"]]},
+{"id":"jx-062","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"天鷹教","places":[["活動","王盤山"]]},
+{"id":"jx-063","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"武當派","places":[["據點","武當山"]]},
+{"id":"jx-064","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"少林派","places":[["據點","嵩山少林寺"]]},
+{"id":"jx-065","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"峨嵋派","places":[["據點","峨嵋山"]]},
+{"id":"jx-066","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"崑崙派","places":[["據點","崑崙三聖坳"]]},
+{"id":"jx-067","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"崆峒派","places":[["據點","崆峒山"]]},
+{"id":"jx-068","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"華山派","places":[["據點","華山"]]},
+{"id":"jx-069","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"丐幫","places":[["活動","盧龍"]]},
+{"id":"jx-070","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"巨鯨幫","places":[["活動","王盤山"]]},
+{"id":"jx-071","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"海沙派","places":[["活動","王盤山"]]},
+{"id":"jx-072","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"神拳門","places":[["活動","王盤山"]]},
+{"id":"jx-073","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"朱武連環莊","places":[["據點","崑崙山朱武連環莊"]]},
+{"id":"jx-074","book":"倚天屠龍記","era":"元末","kind":"江湖組織","name":"金剛門","places":[["相關","西域"]]},
+{"id":"jx-075","book":"碧血劍","era":"明末","kind":"政權","name":"明朝","places":[["都城","北京"],["陪都","南京"],["關隘","山海關"]]},
+{"id":"jx-076","book":"碧血劍","era":"明末","kind":"政權","name":"大順（李自成）","places":[["都城","西安"],["易手","北京"]]},
+{"id":"jx-077","book":"碧血劍","era":"明末","kind":"政權","name":"後金／清","places":[["都城","盛京"]]},
+{"id":"jx-078","book":"碧血劍","era":"明末","kind":"地方勢力","name":"金蛇營／七省盟主一系","places":[["活動","華山"],["活動","北京"]]},
+{"id":"jx-079","book":"碧血劍","era":"明末","kind":"江湖組織","name":"華山派","places":[["據點","華山"]]},
+{"id":"jx-080","book":"碧血劍","era":"明末","kind":"江湖組織","name":"五毒教","places":[["相關","雲南"]]},
+{"id":"jx-081","book":"碧血劍","era":"明末","kind":"江湖組織","name":"石樑派溫氏","places":[["據點","石樑溫家"]]},
+{"id":"jx-082","book":"碧血劍","era":"明末","kind":"江湖組織","name":"山宗","places":[["相關","遼東"]]},
+{"id":"jx-083","book":"碧血劍","era":"明末","kind":"江湖組織","name":"青竹幫","places":[["相關","金陵一帶"]]},
+{"id":"jx-084","book":"鹿鼎記","era":"清初","kind":"政權","name":"清朝","places":[["都城","北京"],["城市","揚州"],["陪都","盛京"],["境內據點","紫禁城"],["境內據點","五臺山清涼寺"],["城市","海寧"]]},
+{"id":"jx-085","book":"鹿鼎記","era":"清初","kind":"政權","name":"羅剎國（俄羅斯）","places":[["都城","莫斯科"],["城堡","雅克薩"],["城堡","尼布楚"]]},
+{"id":"jx-086","book":"鹿鼎記","era":"清初","kind":"地方勢力","name":"東寧鄭氏（明鄭）","places":[["城市","承天府（赤嵌一帶）"],["境內據點","安平鎮"],["相關","澎湖"]]},
+{"id":"jx-087","book":"鹿鼎記","era":"清初","kind":"地方勢力","name":"平西王府／吳周","places":[["據點","昆明平西王府"],["易手","衡州"]]},
+{"id":"jx-088","book":"鹿鼎記","era":"清初","kind":"地方勢力","name":"平南王府","places":[["據點","廣州"]]},
+{"id":"jx-089","book":"鹿鼎記","era":"清初","kind":"地方勢力","name":"靖南王府","places":[["據點","福州"]]},
+{"id":"jx-090","book":"鹿鼎記","era":"清初","kind":"復國勢力","name":"沐王府","places":[["相關","雲南"],["活動","北京"]]},
+{"id":"jx-091","book":"鹿鼎記","era":"清初","kind":"江湖組織","name":"天地會","places":[["據點","青木堂"],["活動","北京"],["活動","揚州"],["相關","臺灣"]]},
+{"id":"jx-092","book":"鹿鼎記","era":"清初","kind":"江湖組織","name":"神龍教","places":[["據點","神龍島"]]},
+{"id":"jx-093","book":"鹿鼎記","era":"清初","kind":"江湖組織","name":"少林派","places":[["據點","嵩山少林寺"]]},
+{"id":"jx-094","book":"鹿鼎記","era":"清初","kind":"江湖組織","name":"王屋派","places":[["據點","王屋山"]]},
+{"id":"jx-095","book":"鹿鼎記","era":"清初","kind":"江湖組織","name":"莊家遺眷","places":[["據點","莊家大屋"]]},
+{"id":"jx-096","book":"鹿鼎記","era":"清初","kind":"江湖組織","name":"華山派一脈（九難）","places":[["相關","華山"],["活動","五臺山"]]},
+{"id":"jx-097","book":"書劍恩仇錄","era":"清乾隆","kind":"政權","name":"清朝","places":[["都城","北京"],["城市","杭州"],["城市","海寧"],["城市","蘭州"]]},
+{"id":"jx-098","book":"書劍恩仇錄","era":"清乾隆","kind":"地方勢力","name":"木卓倫部","places":[["據點","木卓倫部營地"],["相關","南疆"]]},
+{"id":"jx-099","book":"書劍恩仇錄","era":"清乾隆","kind":"江湖組織","name":"紅花會","places":[["據點","六和塔"],["活動","杭州"],["活動","回疆"]]},
+{"id":"jx-100","book":"書劍恩仇錄","era":"清乾隆","kind":"江湖組織","name":"武當派","places":[["據點","武當山"]]},
+{"id":"jx-101","book":"書劍恩仇錄","era":"清乾隆","kind":"江湖組織","name":"鐵膽莊周氏","places":[["據點","鐵膽莊"]]},
+{"id":"jx-102","book":"書劍恩仇錄","era":"清乾隆","kind":"江湖組織","name":"鎮遠鏢局","places":[["活動","西北鏢路"]]},
+{"id":"jx-103","book":"飛狐外傳","era":"清乾隆","kind":"政權","name":"清朝","places":[["都城","北京"],["城市","佛山"],["境內據點","福康安府"]]},
+{"id":"jx-104","book":"飛狐外傳","era":"清乾隆","kind":"地方勢力","name":"福康安府","places":[["據點","北京福康安府"],["活動","天下掌門人大會"]]},
+{"id":"jx-105","book":"飛狐外傳","era":"清乾隆","kind":"江湖組織","name":"紅花會","places":[["活動","北京"],["相關","回疆"]]},
+{"id":"jx-106","book":"飛狐外傳","era":"清乾隆","kind":"江湖組織","name":"商家堡商氏","places":[["據點","商家堡"]]},
+{"id":"jx-107","book":"飛狐外傳","era":"清乾隆","kind":"江湖組織","name":"藥王門","places":[["據點","藥王莊"]]},
+{"id":"jx-108","book":"飛狐外傳","era":"清乾隆","kind":"江湖組織","name":"五虎門鳳氏","places":[["活動","佛山"]]},
+{"id":"jx-109","book":"飛狐外傳","era":"清乾隆","kind":"江湖組織","name":"八卦門","places":[["活動","北京掌門人大會"]]},
+{"id":"jx-110","book":"飛狐外傳","era":"清乾隆","kind":"江湖組織","name":"韋陀門","places":[["活動","北京掌門人大會"]]},
+{"id":"jx-111","book":"飛狐外傳","era":"清乾隆","kind":"江湖組織","name":"天龍門","places":[["活動","北京掌門人大會"]]},
+{"id":"jx-112","book":"雪山飛狐","era":"清乾隆與明末往事","kind":"政權","name":"清朝","places":[["相關","關東"],["據點","八旗軍營"]]},
+{"id":"jx-113","book":"雪山飛狐","era":"清乾隆與明末往事","kind":"政權","name":"大順（李自成）","places":[["相關","闖王軍"],["遺跡","闖王寶藏"]]},
+{"id":"jx-114","book":"雪山飛狐","era":"清乾隆與明末往事","kind":"江湖組織","name":"胡苗范田四家","places":[["活動","玉筆峰"],["相關","闖王軍"]]},
+{"id":"jx-115","book":"雪山飛狐","era":"清乾隆與明末往事","kind":"江湖組織","name":"天龍門田氏","places":[["活動","玉筆峰"]]},
+{"id":"jx-116","book":"雪山飛狐","era":"清乾隆與明末往事","kind":"江湖組織","name":"玉筆山莊卓氏","places":[["據點","玉筆山莊"]]},
+{"id":"jx-117","book":"鴛鴦刀","era":"清代","kind":"政權","name":"清朝","places":[["都城","北京"]]},
+{"id":"jx-118","book":"鴛鴦刀","era":"清代","kind":"江湖組織","name":"威信鏢局","places":[["活動","入京鏢路"]]},
+{"id":"jx-119","book":"鴛鴦刀","era":"清代","kind":"江湖組織","name":"太岳四俠","places":[["活動","入京道上"]]},
+{"id":"jx-120","book":"鴛鴦刀","era":"清代","kind":"地方勢力","name":"蕭半和一方","places":[["據點","蕭家"]]},
+{"id":"jx-121","book":"連城訣","era":"故事時代","kind":"地方勢力","name":"荊州府衙（凌退思）","places":[["據點","荊州府衙"],["據點","荊州牢獄"]]},
+{"id":"jx-122","book":"連城訣","era":"故事時代","kind":"江湖組織","name":"血刀門","places":[["活動","藏邊"],["活動","雪谷"]]},
+{"id":"jx-123","book":"連城訣","era":"故事時代","kind":"江湖組織","name":"梅念笙門下","places":[["據點","萬家"],["活動","荊州"],["相關","天寧寺"]]},
+{"id":"jx-124","book":"連城訣","era":"故事時代","kind":"江湖組織","name":"南四奇","places":[["活動","雪谷"]]},
+{"id":"jx-125","book":"連城訣","era":"南朝梁往事","kind":"政權","name":"南朝梁","places":[["都城","建康"],["城市","江陵"],["相關","天寧寺寶藏"]]},
+{"id":"jx-126","book":"俠客行","era":"未定年代","kind":"江湖組織","name":"長樂幫","places":[["據點","長樂幫總舵"],["相關","鎮江"]]},
+{"id":"jx-127","book":"俠客行","era":"未定年代","kind":"江湖組織","name":"雪山派","places":[["據點","凌霄城"]]},
+{"id":"jx-128","book":"俠客行","era":"未定年代","kind":"江湖組織","name":"俠客島一脈","places":[["據點","俠客島"]]},
+{"id":"jx-129","book":"俠客行","era":"未定年代","kind":"江湖組織","name":"金烏派","places":[["活動","凌霄城"]]},
+{"id":"jx-130","book":"俠客行","era":"未定年代","kind":"江湖組織","name":"關東四大門派","places":[["活動","關東"]]},
+{"id":"jx-131","book":"俠客行","era":"未定年代","kind":"江湖組織","name":"鐵叉會","places":[["相關","石家一線"]]},
+{"id":"jx-132","book":"俠客行","era":"未定年代","kind":"江湖組織","name":"金刀寨","places":[["據點","金刀寨"]]},
+{"id":"jx-133","book":"俠客行","era":"未定年代","kind":"江湖組織","name":"玄素莊","places":[["據點","玄素莊"]]},
+{"id":"jx-134","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"日月神教","places":[["據點","黑木崖"],["據點","杭州梅莊"]]},
+{"id":"jx-135","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"五嶽劍派聯盟","places":[["活動","嵩山封禪臺"]]},
+{"id":"jx-136","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"嵩山派","places":[["據點","嵩山"]]},
+{"id":"jx-137","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"華山派","places":[["據點","華山"],["據點","思過崖"]]},
+{"id":"jx-138","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"衡山派","places":[["據點","衡山"],["活動","衡陽劉府"]]},
+{"id":"jx-139","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"恆山派","places":[["據點","恆山見性峰"]]},
+{"id":"jx-140","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"泰山派","places":[["據點","泰山"]]},
+{"id":"jx-141","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"少林派","places":[["據點","嵩山少林寺"]]},
+{"id":"jx-142","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"武當派","places":[["據點","武當山"]]},
+{"id":"jx-143","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"青城派","places":[["據點","青城山松風觀"],["活動","福州"]]},
+{"id":"jx-144","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"福威鏢局","places":[["據點","福州總局"]]},
+{"id":"jx-145","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"五仙教","places":[["相關","雲南"],["活動","中原水路"]]},
+{"id":"jx-146","book":"笑傲江湖","era":"未定年代","kind":"江湖組織","name":"丐幫","places":[["活動","嵩山少林寺"]]},
+{"id":"jx-147","book":"碧血劍","era":"永樂往事與明末","kind":"政權","name":"浡泥國（渤泥）","places":[["相關","婆羅洲北部"],["活動","南京（來朝）"]]},
+{"id":"jx-148","book":"碧血劍","era":"明末","kind":"江湖組織","name":"金龍幫","places":[["據點","金陵"]]},
+{"id":"jx-149","book":"碧血劍","era":"明末","kind":"江湖組織","name":"龍游幫","places":[["相關","衢州龍游"]]},
+{"id":"jx-150","book":"鹿鼎記","era":"鄭成功攻臺往事","kind":"地方勢力","name":"荷蘭東印度公司（臺灣）","places":[["城堡","熱蘭遮城"],["城堡","普羅民遮城"]]},
+{"id":"jx-151","book":"射鵰英雄傳","era":"蒙古統一前","kind":"地方勢力","name":"克烈部（王罕）","places":[["據點","王罕大營"]]},
+{"id":"jx-152","book":"射鵰英雄傳","era":"蒙古統一前","kind":"地方勢力","name":"札木合部眾","places":[["活動","蒙古草原"]]},
+{"id":"jx-153","book":"射鵰英雄傳","era":"蒙古統一前","kind":"地方勢力","name":"乃蠻部","places":[["相關","蒙古高原西部"]]},
+{"id":"jx-154","book":"射鵰英雄傳","era":"蒙古統一前","kind":"政權","name":"西遼","places":[["相關","西域"]]},
+{"id":"jx-155","book":"射鵰英雄傳","era":"蒙古統一前","kind":"地方勢力","name":"蔑兒乞部","places":[["活動","北方草原"]]},
+{"id":"jx-156","book":"射鵰英雄傳","era":"蒙古統一前","kind":"地方勢力","name":"塔塔兒部","places":[["活動","蒙古草原"]]},
+{"id":"jx-157","book":"天龍八部","era":"舊版外交段落","kind":"政權","name":"高麗","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-158","book":"天龍八部","era":"舊版外交段落","kind":"政權","name":"于闐","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-159","book":"天龍八部","era":"舊版外交段落","kind":"政權","name":"高昌","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-160","book":"天龍八部","era":"舊版外交段落","kind":"政權","name":"波斯","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-161","book":"天龍八部","era":"舊版外交段落","kind":"政權","name":"大食","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-162","book":"天龍八部","era":"舊版外交段落","kind":"地方勢力","name":"吐谷渾","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-163","book":"天龍八部","era":"舊版外交段落","kind":"地方勢力","name":"突厥","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-164","book":"天龍八部","era":"舊版外交段落","kind":"地方勢力","name":"沙陀","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-165","book":"天龍八部","era":"舊版外交段落","kind":"地方勢力","name":"党項","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-166","book":"天龍八部","era":"舊版外交段落","kind":"地方勢力","name":"回鶻","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-167","book":"天龍八部","era":"舊版外交段落","kind":"地方勢力","name":"敦煌","places":[["外交場景","遼上京使節往來"]]},
+{"id":"jx-168","book":"越女劍","era":"春秋・鑄劍往事","kind":"政權","name":"秦國","places":[["相關","秦地"]]},
+{"id":"jx-169","book":"天龍八部","era":"慕容氏往事","kind":"政權","name":"前燕","places":[["相關","龍城"],["都城","鄴城"]]},
+{"id":"jx-170","book":"天龍八部","era":"慕容氏往事","kind":"政權","name":"後燕","places":[["都城","中山"]]},
+{"id":"jx-171","book":"天龍八部","era":"慕容氏往事","kind":"政權","name":"西燕","places":[["都城","長子"]]},
+{"id":"jx-172","book":"天龍八部","era":"慕容氏往事","kind":"政權","name":"南燕","places":[["都城","廣固"]]}
+];
 const names = ['林以澄','林知夏','林予川','林禾音','林望舒','林青禾','林安序','林晴岑'];
 const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const fmt = value => new Intl.NumberFormat('zh-TW').format(value);
@@ -53,7 +228,7 @@ function profileDefaults(p) {
   return {
     upbringing:'一般家庭', interest:'尚未形成', education:p.generation>1?'地方職訓':p.job==='進修學生'?'進修課程':p.skill>=2?'實務訓練':'基礎教育',
     contacts:p.place==='north'?1:0, studiedAbroad:false, sector:p.job.includes('技術')?'技術業':'服務業',
-    debt:Math.max(0,-p.cash), reserve:0, care:p.child?2:0,
+    debt:Math.max(0,-p.cash), reserve:0, care:p.child?2:0, jianghuVisits:[],
     trust:p.partner?65:40, conflict:0, partnerGoal:p.place==='north'?'在霜河城繼續工作':'留在青潮港照顧家人',
     partnerHome:p.place, incidentResolved:false,
     ...p,
@@ -81,6 +256,7 @@ function load() {
 }
 let state = load();
 let tab = 'life';
+const jianghuFilter={book:'',kind:'',query:'',faction:'',place:0};
 const $ = id => document.getElementById(id);
 const person = () => state.people.find(p=>p.id===state.active);
 const climate = (year=state.year) => cycles[Math.floor((year-2002)/9)%cycles.length];
@@ -339,6 +515,105 @@ function atlas() {
     Object.values(regions).map(region=>'<div class="region"><span class="badge">'+region.country+'</span><h3>'+region.name+'</h3><p>'+region.note+'</p><p class="muted">常用語言 '+region.language+'　｜　每年基本開支 '+money(region.cost)+'</p></div>').join('')+
     '<div class="region"><h3>景氣週期</h3><p>景氣每九年切換一次，會影響薪資、技術職門檻、房租與投資。霜河城長住政策每十二年切換一次。</p></div></section>';
 }
+const jianghuEffects={
+  '政權':{fee:3, stat:'skill', amount:1, label:'見聞整理・技能 +1'},
+  '復國勢力':{fee:2, stat:'skill', amount:1, label:'交流行事經驗・技能 +1'},
+  '地方勢力':{fee:2, stat:'bond', amount:5, label:'參與互助・親情 +5'},
+  '地方社群':{fee:1, stat:'bond', amount:5, label:'交流家族故事・親情 +5'},
+  '江湖組織':{fee:2, stat:'skill', amount:1, label:'觀摩技藝・技能 +1'}
+};
+const jianghuSources={
+  '越女劍':'https://hetubook.com/book2/43/934.html',
+  '白馬嘯西風':'https://hetubook.com/book2/56/1620.html',
+  '天龍八部':'https://www.ylib.com/activity/YLib2026/book-info.asp?itemNo=D600R',
+  '射鵰英雄傳':'https://read.99csw.com/book/2183/64892.html',
+  '碧血劍':'https://www.kanunu8.com/wuxia/201102/1622/36919.html',
+  '鹿鼎記':'https://bailushuyuan.org/novel/traditional/chapters/79369',
+  '俠客行':'https://www.ylib.com/activity/YLib2026/book-info.asp?itemNo=D7B0J'
+};
+const jianghuText=value=>value.toLowerCase().replaceAll('雕','鵰').replaceAll('嵋','眉').replace(/\s+/g,'');
+function jianghuMatches() {
+  const query=jianghuText(jianghuFilter.query);
+  return jianghuCatalog.filter(entry=>
+    (!jianghuFilter.book||entry.book===jianghuFilter.book)&&
+    (!jianghuFilter.kind||entry.kind===jianghuFilter.kind)&&
+    (!query||jianghuText([entry.book,entry.era,entry.name,...entry.places.flat()].join(' ')).includes(query))
+  );
+}
+function jianghuRestriction(p,entry) {
+  if(state.year-p.born<16)return '滿 16 歲後可出發。';
+  if(!ages[state.stage+1])return '交棒後可由下一代繼續遊歷。';
+  if(p.jianghuVisits.some(visit=>visit.year===state.year))return '本階段已遊歷，推進人生事件後可再次出發。';
+  if(p.cash<jianghuEffects[entry.kind].fee)return '目前旅費不足。';
+  return '';
+}
+function jianghuPreview(p,entry,place) {
+  if(!entry||!place)return '<p class="atlas-note">選擇一個勢力和地點即可查看遊歷條件。</p>';
+  const [relation,name]=place;
+  const rules=jianghuEffects[entry.kind], blocked=jianghuRestriction(p,entry);
+  return '<div class="atlas-preview"><span class="badge">'+escape(entry.kind+'・'+relation)+'</span><h3>'+escape(name)+'</h3>'+
+    '<p class="muted">'+escape('《'+entry.book+'》・'+entry.era+'・'+entry.name)+'</p>'+
+    '<p>'+escape('旅費 '+money(rules.fee)+'・'+rules.label)+'</p>'+
+    (blocked?'<p class="muted">'+escape(blocked)+'</p>':'')+
+    '<button class="ghost" id="jianghu-visit"'+(blocked?' disabled':'')+'>安排遊歷</button></div>';
+}
+function jianghuAtlas(p) {
+  const books=[...new Set(jianghuCatalog.map(entry=>entry.book))];
+  const kinds=Object.keys(jianghuEffects);
+  const booksOptions=books.map(book=>'<option'+(book===jianghuFilter.book?' selected':'')+'>'+escape(book)+'</option>').join('');
+  const kindOptions=kinds.map(kind=>'<option'+(kind===jianghuFilter.kind?' selected':'')+'>'+escape(kind)+'</option>').join('');
+  const previous=p.jianghuVisits.at(-1);
+  return '<section class="card"><div class="eyebrow">跨時代遊歷</div><h2>武俠圖鑑</h2>'+
+    '<p class="muted">從 '+books.length+' 部小說選擇政權或勢力，再選一處地點。每個人生階段可遊歷一次，行程會寫入家族紀事。</p>'+
+    '<div class="atlas-fields">'+
+    '<label>作品<select id="jianghu-book"><option value="">全部作品</option>'+booksOptions+'</select></label>'+
+    '<label>勢力類別<select id="jianghu-kind"><option value="">全部類別</option>'+kindOptions+'</select></label>'+
+    '<label class="atlas-wide">搜尋勢力或地點<input id="jianghu-search" type="search" placeholder="例如 大理、光明頂、熱蘭遮城" value="'+escape(jianghuFilter.query)+'"></label>'+
+    '<label class="atlas-wide">政權或勢力<select id="jianghu-faction"></select></label>'+
+    '<label class="atlas-wide">城市或據點<select id="jianghu-place"></select></label>'+
+    '</div><div id="jianghu-preview"></div>'+
+    (previous?'<p class="atlas-note">上次遊歷 '+escape(previous.faction+'・'+previous.place)+'</p>':'')+
+    '<details class="atlas-sources"><summary>作品來源與地點標記</summary>'+
+    '<p class="atlas-note">各作品按故事背景獨立呈現。都城、城市與陪都可含歷史地理補充。據點是勢力的根據地，活動地、外交場景和相關地點則是與情節有關的地點。舊版資料另標版本。遊歷是獨立行程，結束後回到主線居住地。</p>'+
+    '<p><a href="https://www.ylib.com/setsale_cont.aspx?ProductNo=794" target="_blank" rel="noopener">遠流《金庸作品集》</a>・<a href="https://tm.ncl.edu.tw/article?d=&amp;n=338&amp;u=001_004_0000364019" target="_blank" rel="noopener">國家圖書館臺灣記憶・鄭氏與荷方據點</a></p>'+
+    '<p id="jianghu-source"></p></details></section>';
+}
+function updateJianghuOptions(preferMatchingPlace=false) {
+  const list=jianghuMatches();
+  const entry=list.find(item=>item.id===jianghuFilter.faction)||list[0];
+  jianghuFilter.faction=entry?.id??'';
+  const factionSelect=$('jianghu-faction'), placeSelect=$('jianghu-place');
+  factionSelect.innerHTML=list.length?list.map(item=>'<option value="'+item.id+'">'+escape(item.name+'｜'+item.book+'・'+item.era)+'</option>').join(''):'<option>沒有符合的勢力</option>';
+  factionSelect.disabled=!entry;
+  factionSelect.value=jianghuFilter.faction;
+  if(entry&&preferMatchingPlace&&jianghuFilter.query.trim()){
+    const query=jianghuText(jianghuFilter.query);
+    jianghuFilter.place=Math.max(0,entry.places.findIndex(([,name])=>jianghuText(name).includes(query)));
+  }
+  if(entry&&!entry.places[jianghuFilter.place])jianghuFilter.place=0;
+  placeSelect.innerHTML=entry?entry.places.map(([relation,name],index)=>'<option value="'+index+'">'+escape(name+'・'+relation)+'</option>').join(''):'<option>請調整篩選條件</option>';
+  placeSelect.disabled=!entry;
+  placeSelect.value=String(jianghuFilter.place);
+  $('jianghu-preview').innerHTML=jianghuPreview(person(),entry,entry?.places[jianghuFilter.place]);
+  const source=entry?.era==='舊版外交段落'?'https://xuoda.com/wuxia/jinyong/011/216.htm'
+    : entry?.era==='慕容氏往事'?'https://www.hetubook.com/book2/39/825.html'
+    : jianghuSources[entry?.book];
+  $('jianghu-source').innerHTML=source?'<a href="'+source+'" target="_blank" rel="noopener">作品資料或原文章節對照</a>':'';
+}
+function visitJianghu() {
+  const p=person(), entry=jianghuMatches().find(item=>item.id===jianghuFilter.faction);
+  const place=entry?.places[jianghuFilter.place];
+  if(!place||jianghuRestriction(p,entry))return;
+  const [relation,name]=place, rules=jianghuEffects[entry.kind];
+  charge(p,rules.fee);
+  p[rules.stat]+=rules.amount;
+  p.bond=limit(p.bond,0,100);
+  p.jianghuVisits.push({year:state.year,book:entry.book,faction:entry.name,place:name});
+  const detail='你在《'+entry.book+'》的'+name+'（'+relation+'）接觸了'+entry.name+'。'+rules.label+'，旅費 '+money(rules.fee)+'。';
+  addLog(p,'武俠遊歷・'+name,detail);
+  state.latest=detail;
+  save();render();
+}
 function render(focus=false) {
   const p=person(), region=regions[p.place], world=climate(), age=state.year-p.born;
   $('chapter').textContent='林氏家譜　／　第 '+p.generation+' 代　／　'+state.year+' 年';
@@ -347,7 +622,8 @@ function render(focus=false) {
   $('place').textContent='⌖ '+region.country+'・'+region.name;
   $('hero').classList.toggle('snow',p.place==='north');
   document.querySelectorAll('.tab').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.tab===tab)));
-  $('content').innerHTML=({life:()=>life(p),family:()=>family(p),journal,world:atlas}[tab])();
+  $('content').innerHTML=({life:()=>life(p),family:()=>family(p),journal,world:atlas,jianghu:()=>jianghuAtlas(p)}[tab])();
+  if(tab==='jianghu')updateJianghuOptions();
   const stats=[['存款',money(p.cash)],['負債',money(p.debt)],['年收入',money(p.income)],['生活支出／年',money(livingCost(p,age,state.year))],
     ['投資市值',money(p.invested)],['緊急預備金',money(p.reserve)],['健康',p.health+' / 100'],['親情',p.bond+' / 100'],
     ['技能',p.skill+' 級'],['嶺語',p.language+' 級'],['霜河城人脈',p.contacts+' 位'],['照顧責任',p.care+' 級']];
@@ -366,8 +642,23 @@ document.querySelector('.tabs').addEventListener('click',e=>{
 $('content').addEventListener('click',e=>{
   const button=e.target.closest('button');
   if(!button)return;
+  if(button.id==='jianghu-visit')visitJianghu();
   if(button.dataset.pick!==undefined)advance(Number(button.dataset.pick));
   if(button.dataset.heir!==undefined)handoff(Number(button.dataset.heir));
+});
+$('content').addEventListener('input',event=>{
+  if(event.target.id==='jianghu-search'){
+    jianghuFilter.query=event.target.value;
+    jianghuFilter.place=0;
+    updateJianghuOptions(true);
+  }
+});
+$('content').addEventListener('change',event=>{
+  const field={'jianghu-book':'book','jianghu-kind':'kind','jianghu-faction':'faction','jianghu-place':'place'}[event.target.id];
+  if(!field)return;
+  jianghuFilter[field]=field==='place'?Number(event.target.value):event.target.value;
+  if(field!=='place')jianghuFilter.place=0;
+  updateJianghuOptions();
 });
 $('reset').addEventListener('click',()=>{
   $('confirm').returnValue='cancel';
