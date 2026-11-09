@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="在兩座城市之間書寫你的跨世代家族故事。">
+<title>人生長卷 · 跨世代人生模擬</title>
+<style>
+:root{color-scheme:dark;--bg:#111819;--panel:#1a2323;--line:#34413d;--ink:#f0eadb;--soft:#b9c5bb;--gold:#edc488;--green:#a6c3ae;--serif:"Noto Serif TC","PMingLiU","Songti TC",serif}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 48% -20%,#293b33 0,transparent 54%),var(--bg);color:var(--ink);font:15px/1.65 system-ui,"Microsoft JhengHei",sans-serif;min-height:100vh}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.shell{max-width:1240px;margin:auto;padding:0 42px}header{height:74px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.brand{font:700 24px var(--serif);letter-spacing:.17em;display:flex;gap:12px;align-items:center}.brand-icon{width:31px;height:31px;display:grid;place-items:center;border:1px solid #ac966e;border-radius:50%;color:var(--gold);font:17px var(--serif);letter-spacing:0}.top-right{display:flex;align-items:center;gap:16px}.save{color:var(--green);font-size:12px}.ghost,.tab{background:transparent;border:1px solid var(--line);border-radius:7px;padding:7px 12px;color:var(--soft)}.ghost:hover,.tab:hover{border-color:var(--gold);color:var(--gold)}
+.hero{margin:24px 0 16px;position:relative;min-height:230px;display:flex;align-items:center;overflow:hidden;border:1px solid #586153;border-radius:14px;background:#304038}.hero svg{position:absolute;width:100%;height:100%;inset:0;pointer-events:none}.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#18231ff5 0%,#18231fd9 27%,transparent 76%);pointer-events:none}.hero-copy{z-index:1;padding:25px 31px;position:relative}.eyebrow{font-size:11px;letter-spacing:.2em;color:var(--gold);font-weight:700}.hero h1{font:700 clamp(29px,5vw,55px)/1.2 var(--serif);letter-spacing:.11em;margin:9px 0 7px}.hero p{margin:0;color:#d6e0d2;font-size:14px}.hero-place{z-index:1;position:absolute;right:20px;bottom:15px;background:#162522da;border:1px solid #718576;border-radius:5px;padding:4px 10px;color:#d2dfce;font-size:12px}.hero.snow{background:#334650}.hero.snow svg{filter:hue-rotate(25deg) saturate(.68)}.hero.snow::after{background:linear-gradient(90deg,#1a252af7 0%,#1a252ada 27%,transparent 76%)}
+.tabs{display:flex;gap:10px;margin-bottom:14px}.tab[aria-selected=true]{color:var(--gold);border-color:#857050;background:#352e24}.layout{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(280px,1fr);gap:16px;align-items:start}.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:20px 23px;margin-bottom:13px}.card h2,.card h3{font-family:var(--serif);letter-spacing:.075em;margin:3px 0 7px}.card h2{font-size:28px}.card h3{font-size:18px}.event>p{color:var(--soft);margin:0 0 15px}.choices{display:grid;gap:8px}.choice{display:grid;grid-template-columns:33px 1fr auto;gap:10px;align-items:center;text-align:left;background:#222e2b;border:1px solid #3d4b44;border-radius:7px;padding:9px 11px;width:100%}.choice:hover:not(:disabled){background:#33382c;border-color:#ae9265}.choice:disabled{opacity:.53;cursor:default}.choice strong,.choice small{display:block}.choice small{color:var(--soft);font-size:12px}.choice i{font-style:normal;color:var(--gold)}.key{display:grid;place-items:center;width:27px;height:27px;border-radius:4px;background:#38392d;color:var(--gold);font-size:12px}.result{padding:10px 13px;border-left:2px solid var(--gold);background:#2c3028;margin:0 0 15px;color:#e3d6b9;font-size:13px}
+.profile{display:flex;align-items:center;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--line)}.avatar{width:43px;height:43px;display:grid;place-items:center;border-radius:50%;background:#3c432e;color:#f4d39d;font:22px var(--serif);flex:none}.profile h3{margin:0}.muted,.profile p{color:var(--soft);font-size:12px;margin:0}.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}.stat{border:1px solid #33423b;border-radius:6px;background:#202b27;padding:6px 9px}.stat span{display:block;color:var(--soft);font-size:11px}.stat strong{font-size:16px;color:#e4decf}.world{display:flex;justify-content:space-between;gap:12px;align-items:center}.world strong{color:var(--green);font-size:13px}.world p{margin:0}.person,.log{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line)}.person:last-child,.log:last-child{border:0}.person p,.log p{margin:0}.badge{font-size:11px;display:inline-block;padding:2px 7px;border:1px solid #5d6550;border-radius:4px;color:var(--gold);white-space:nowrap}.log time{color:var(--gold);font-size:12px;min-width:53px}.region{border-top:1px solid var(--line);padding:12px 0}.region p{margin:2px 0;color:var(--soft)}.region:last-child{padding-bottom:0}footer{color:#a5b1a5;font-size:11px;padding:4px 0 20px;letter-spacing:.04em}dialog{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:23px;max-width:calc(100% - 30px)}dialog::backdrop{background:#000a}dialog h2{margin:0;font:24px var(--serif)}dialog button{margin-right:7px}
+@media(max-width:760px){.shell{padding:0 15px}header{height:61px}.brand{font-size:19px}.top-right{gap:7px}.save{display:none}.hero{min-height:192px;margin-top:16px}.hero-copy{padding:20px}.hero-place{bottom:8px;right:8px}.layout{grid-template-columns:1fr}.card{padding:15px}.tabs{gap:6px}.tab{padding:5px 9px}.card h2{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header><div class="brand"><span class="brand-icon" aria-hidden="true">卷</span>人生長卷</div><div class="top-right"><span class="save" id="save">● 自動存檔</span><button class="ghost" id="reset">開新家譜</button></div></header>
+<section class="hero" id="hero" aria-label="家族故事">
+<svg viewBox="0 0 1200 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#667f72"/><stop offset="1" stop-color="#d3ae76"/></linearGradient><linearGradient id="sea" x2="0" y2="1"><stop stop-color="#536f65"/><stop offset="1" stop-color="#243f40"/></linearGradient><pattern id="windows" width="10" height="12" patternUnits="userSpaceOnUse"><rect x="3" y="3" width="2" height="3" fill="#f2c98d" opacity=".65"/></pattern></defs>
+<path fill="url(#sky)" d="M0 0h1200v260H0z"/><circle cx="964" cy="74" r="43" fill="#f5cd92" opacity=".9"/><path fill="#668176" d="m0 153 159-47 135 31 122-44 112 47 156-76 111 67 68-47 137 65 93-58 107 42v127H0z"/><path fill="#3f6159" d="m0 181 129-22 94 23 159-58 167 52 111-22 109 22 147-48 113 23 171-31v140H0z"/><path fill="url(#sea)" d="M0 177h1200v83H0z"/><path fill="none" stroke="#d0af7b" opacity=".42" d="M868 188h182m-107 11h66m-165 9h85m55 5h115m-198 11h114m-153 12h155"/><g fill="#233c37"><path d="M0 172h397l112 25 132 37 107 26H0z"/><path d="M572 185v-32h23v-13h21v45zm53 0v-51h22v-21h27v72zm60 0v-34h22v-16h23v50zm57 0v-37h21v37zm29 0v-27h29v27zm39 0v-48h19v-13h16v61zm49 0v-28h27v28zm41 0v-22h36v22zm46 0v-36h16v36zm34 0v-29h28v29zm48 0v-18h21v18zm30 0v-46h25v46zm38 0v-34h22v34zm30 0v-25h23v25zm33 0v-41h42v41z"/><path d="M683 183h517v5H683z"/></g><path fill="url(#windows)" d="M628 135h44v49h-44zm58 19h40v28h-40zm125-15h32v44h-32zm249 3h21v40h-21zm101 7h37v34h-37z"/><path fill="none" stroke="#d9b981" opacity=".63" d="M728 249q155-28 309-49l163-12m-464 66q155-29 301-49l163-12m-373 39v-21m0 0q42 16 87-15 48 15 92-15m-92 38v-23m92 9v-24"/>
+</svg>
+<div class="hero-copy"><div class="eyebrow" id="chapter"></div><h1 id="headline"></h1><p id="subtitle"></p></div><span class="hero-place" id="place"></span></section>
+<nav class="tabs" aria-label="遊戲畫面"><button class="tab" data-tab="life" aria-selected="true">人生抉擇</button><button class="tab" data-tab="family" aria-selected="false">家族樹</button><button class="tab" data-tab="journal" aria-selected="false">家族紀事</button><button class="tab" data-tab="world" aria-selected="false">世界圖鑑</button></nav>
+<main class="layout"><div id="content" aria-live="polite"></div><aside id="sidebar" aria-label="主角與世界狀態"></aside></main>
+<footer>人生長卷・可玩原型　｜　地方、制度與事件為虛構模擬　｜　存檔保留於此瀏覽器</footer>
+</div>
+<dialog id="confirm"><h2>開啟新家譜</h2><p>這會清除目前瀏覽器中的家族進度。</p><form method="dialog"><button class="ghost" value="cancel" autofocus>繼續目前家譜</button><button class="ghost" value="reset">確認重新開始</button></form></dialog>
+<script>
+
+'use strict';
+const KEY = 'life-lineage-v1';
+const ages = [0,8,16,21,26,30,33,39,46,54,63];
+const regions = {
+  harbor: {name:'青潮港', country:'嶼灣聯邦', cost:5, language:'灣語', note:'沿海港城。市集商會提供工作和互助，家人也常一起分擔照顧責任。'},
+  north: {name:'霜河城', country:'北嶺共和國', cost:7, language:'嶺語', note:'河谷工業城。技術職機會較多，房租較高，長住需有語言能力和穩定工作。'}
+};
+const cycles = [
+  {name:'穩定成長', detail:'需求穩定，家庭與企業按原定計畫發展。', market:1},
+  {name:'產業擴張', detail:'新職缺增加，長期投資較容易累積成果。', market:3},
+  {name:'景氣降溫', detail:'訂單下滑，風險部位可能帶來虧損。', market:-3},
+  {name:'逐步復甦', detail:'企業恢復招募，投資報酬回升。', market:2}
+];
+const names = ['林以澄','林知夏','林予川','林禾音','林望舒','林青禾','林安序','林晴岑'];
+const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const fmt = value => new Intl.NumberFormat('zh-TW').format(value);
+const limit = (n,min,max) => Math.min(max, Math.max(min,n));
+const money = n => fmt(n) + ' 萬';
+function start() {
+  return {
+    version:1, year:2002, stage:0, active:1, next:2, legacy:'尚未形成', latest:'',
+    people:[{id:1, name:names[0], generation:1, born:2002, place:'harbor', cash:4, health:77,
+      bond:54, skill:0, language:0, income:0, invested:0, job:'幼年', partner:'', child:null,
+      familyTrack:'', business:false, resident:false, parent:null, relation:'創始一代'}],
+    log:[{year:2002, who:names[0], title:'出生於青潮港', detail:'家族故事從嶼灣聯邦的港城開始。'}]
+  };
+}
+function load() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY));
+    if (saved?.version === 1 && saved.people?.some(person=>person.id===saved.active) && ages[saved.stage]!==undefined) return saved;
+  } catch {}
+  return start();
+}
+let state = load();
+let tab = 'life';
+const $ = id => document.getElementById(id);
+const person = () => state.people.find(p=>p.id===state.active);
+const climate = () => cycles[Math.floor((state.year-2002)/9)%cycles.length];
+const addLog = (p,title,detail) => state.log.push({year:state.year,who:p.name,title,detail});
+const option = (title,hint,result,apply,allowed=true) => ({title,hint,result,apply,allowed});
+function eventFor(p) {
+  switch(state.stage) {
+    case 0: return {title:'家裡的第一個決定', intro:'你在港邊的一間小公寓出生。父母白天工作，祖母提議搬過來一起照顧你。這一回合由家人替你決定。', options:[
+      option('與祖母同住','親情 +14・家用 −2 萬','祖母開始帶你認識市場的鄰居，灣語也成了家中的日常。',()=>{p.bond+=14;p.cash-=2;}),
+      option('留在原來的家','家用 +3 萬・健康 +4','家人維持原本的住處，靠輪班建立一套照顧節奏。',()=>{p.cash+=3;p.health+=4;})
+    ]};
+    case 1: return {title:'放學以後', intro:'市場的修理師傅願意收你當小助手，學校也剛成立合唱團。你想把放學後的時間留給什麼？', options:[
+      option('跟著師傅學手藝','技能 +2・家用 +2 萬','你第一次用自己學到的手藝幫家裡賺錢。',()=>{p.skill+=2;p.cash+=2;}),
+      option('加入學校合唱團','親情 +8・嶺語 +1','你認識會說嶺語的同學，兩個家庭開始一起過節。',()=>{p.bond+=8;p.language++;}),
+      option('留時間陪家人','親情 +12・健康 +5','你跟家人一起散步，也學會幾道只有家裡會做的料理。',()=>{p.bond+=12;p.health+=5;})
+    ]};
+    case 2: return {title:'畢業之前', intro:'你可以準備升學、進入學徒計畫，或先留在家中幫忙。每條路都有一個不同的職涯起點。', options:[
+      option('準備升學','技能 +3・嶺語 +1・學費 3 萬','交換課程讓你開始考慮到國外生活。',()=>{p.skill+=3;p.language++;p.cash-=3;p.job='進修學生';},p.cash>=3),
+      option('加入學徒計畫','技能 +2・存款 +5 萬','你開始接案，並認識幾位同產業的前輩。',()=>{p.skill+=2;p.cash+=5;p.job='技術學徒';}),
+      option('進家裡熟悉的商會工作','親情 +10・存款 +3 萬','商會鄰居提供一份工作，你也成為家中可以倚靠的人。',()=>{p.bond+=10;p.cash+=3;p.job='商會助理';})
+    ]};
+    case 3: return {title:'第一份正式工作', intro:'港城商會和技術公司都在招人。你也可以先存錢，安排一次短期旅行。', options:[
+      option('應徵技術職','技能至少 2・年收入 12 萬','你建立專業經歷，幾年後有資格申請海外職缺。',()=>{p.job='技術專員';p.income=12;p.skill++;},p.skill>=2),
+      option('加入港城商會','年收入 9 萬・親情 +9','在商會工作讓你更了解港城的生意與人情。',()=>{p.job='商會職員';p.income=9;p.bond+=9;}),
+      option('打工並短期旅行','旅費 3 萬・嶺語 +2・年收入 8 萬','你在霜河城住了一個月，帶回一個未來可能用得上的海外聯絡方式。',()=>{p.job='自由接案';p.income=8;p.cash-=3;p.language+=2;},p.cash>=3)
+    ]};
+    case 4: return {title:'一封海外邀約', intro:'霜河城的技術公司開出新職缺。留下能繼續照應家裡，搬走則要面對房租、語言和遠距關係。', options:[
+      option('赴霜河城工作','搬遷 8 萬・需嶺語 2 或技能 3','你搭上離港的船，在霜河城開始新的工作。',()=>{p.place='north';p.cash-=8;p.income=16;p.job='海外技術員';p.bond-=10;},p.cash>=8&&(p.language>=2||p.skill>=3)),
+      option('留下並接受本地升遷','年收入 +3 萬・親情 +8','你留在港城，海外邀約成了和家人飯後聊起的一個可能。',()=>{p.income+=3;p.bond+=8;p.job='本地組長';}),
+      option('先修語言，留待下次申請','嶺語 +2・學費 3 萬','這次名額已滿，語言課讓你保留了往後移居的選擇。',()=>{p.language+=2;p.cash-=3;},p.cash>=3)
+    ]};
+    case 5: return {title:'兩個人的未來', intro:'在社群活動認識的季安與你越走越近。對方希望先談清楚彼此的工作計畫、居住地和照顧責任。', options:[
+      option('確認關係並共擬家庭計畫','親情 +12・開啟伴侶育兒路線','你和季安同意每隔幾年重新討論工作、居住與照護安排。',()=>{p.partner='季安';p.bond+=12;}),
+      option('保持朋友關係','親情 +6・健康 +5','你們持續聯絡，彼此仍是遇到問題時可以商量的朋友。',()=>{p.bond+=6;p.health+=5;}),
+      option('先搬到另一座城市','搬遷 6 萬・去霜河城需嶺語 2','你把生活重心搬到另一個地區，並開始重新建立支持網絡。',()=>{p.place=p.place==='north'?'harbor':'north';p.income=p.place==='north'?15:11;p.job='跨地區職員';p.cash-=6;p.bond-=6;p.resident=p.place==='harbor'?p.resident:false;},p.cash>=6&&(p.place==='north'||p.language>=2))
+    ]};
+    case 6: return {title:'家裡多了一把椅子', intro:'家族裡有一位新生的晚輩。你也可以在這個階段選擇建立自己的育兒家庭。你想為接下來幾年留多少時間和金錢？', options:[
+      option('與季安一起迎接孩子','需伴侶・支出 8 萬・親情 +12','你們開始輪流照顧孩子，也重新調整工作時間。',()=>{p.cash-=8;p.bond+=12;p.income-=2;addBranch(p,'親生子女');},!!p.partner&&p.cash>=8),
+      option('申請收養並完成評估','支出 6 萬・親情 +9','你完成評估與準備，家裡多了一位新成員。',()=>{p.cash-=6;p.bond+=9;p.income--;addBranch(p,'收養子女');},p.cash>=6),
+      option('照自己的節奏生活','親情 +5・家族支系仍會成長','你維持原本的生活規劃，也答應偶爾陪家裡的新生晚輩。',()=>{p.bond+=5;addBranch(p,'');})
+    ]};
+    case 7: return {title:'下一筆錢怎麼用', intro:p.place==='north'?'房租和事業都需要規劃。當地開放長住申請，你也可以投資或保留現金。':'家裡有一點餘裕。你可以為突發事件保留現金、投資，或試著開一間小店。', options:[
+      option('建立緊急預備金','健康 +5・保留手上現金','你留了一筆隨時可動用的存款，也把例行健檢排進行事曆。',()=>{p.health+=5;}),
+      option('投入分散投資','投入 12 萬・市值隨景氣波動','你用部分存款建立投資部位。未來的市場變化會反映到資產。',()=>{p.cash-=12;p.invested+=12;},p.cash>=12),
+      p.place==='north'
+        ? option('申請長期居留','嶺語至少 2・有工作・費用 5 萬','你取得長住資格，日後留下的成本降低，家人也多了一條依親路線。',()=>{p.cash-=5;p.resident=true;},p.language>=2&&p.income>0&&p.cash>=5)
+        : option('創立家族小店','投入 15 萬・年收入 +3 萬','小店開始營運，接手家族的人日後可以選擇延續它。',()=>{p.cash-=15;p.income+=3;p.business=true;p.job='小店經營者';},p.cash>=15)
+    ]};
+    case 8: return {title:'來自老家的電話', intro:'一位長輩住院，接下來需要有人安排照護。此時世界正處於「'+climate().name+'」，工作與存款會影響你能怎麼分擔。', options:[
+      option('減少工時，親自分擔照護','年收入 −3 萬・親情 +18','你增加陪伴時間，親族也更願意在下一次遷居時幫忙。',()=>{p.income=Math.max(0,p.income-3);p.bond+=18;p.familyTrack='親自照護';}),
+      option('出資聘請照護人員','支出 14 萬・親情 +8','照護安排穩定下來，你也能維持目前的職涯節奏。',()=>{p.cash-=14;p.bond+=8;p.familyTrack='共同出資照護';},p.cash>=14),
+      option('與親族協調輪班','健康 −7・親情 +10','大家重新分工。這段時間比較累，但家人因此建立了共同照護的方式。',()=>{p.health-=7;p.bond+=10;p.familyTrack='親族輪班照護';})
+    ]};
+    case 9: return {title:'準備交棒', intro:p.business?'小店已經成為鄰里熟悉的地方。你想把哪些東西留給接下來的人？':'你開始整理自己的財務、文件與家中老照片。你想讓下一代從哪裡接續？', options:[
+      option('整理財產與事業交接','交棒時轉移 50% 現金及投資，可承接小店','你留下清楚的資產紀錄與交接文件。',()=>{p.plan='assets';state.legacy='資產與事業';}),
+      option('留下語言與生活故事','交棒時轉移 25% 現金及投資，增加語言與親情','你和家人一起把口述故事、菜譜和家族稱呼記錄下來。',()=>{p.plan='culture';state.legacy='語言與家庭故事';}),
+      option('安排獨立退休生活','交棒時轉移 15% 現金及投資・健康 +10','你先為自己規劃退休生活，讓接棒的人能自行決定下一步。',()=>{p.plan='independent';p.health+=10;state.legacy='獨立生活';})
+    ]};
+    default: return null;
+  }
+}
+function addBranch(parent, kind) {
+  function add(relation, place, linked) {
+    const id=state.next++;
+    const descendant={id,name:names[(id-1)%names.length],generation:parent.generation+1,born:state.year,
+      place,cash:0,health:76,bond:50,skill:2,language:place==='north'?2:1,income:9,invested:0,
+      job:'地方職員',partner:'',child:null,familyTrack:'',business:false,resident:place==='north'&&parent.resident,
+      parent:linked?parent.id:null, branchOf:parent.id, relation};
+    state.people.push(descendant);
+    addLog(descendant, relation==='手足支系'?'手足家中迎來新生兒':'加入家庭', regions[place].name+'・'+relation);
+    return id;
+  }
+  if (kind) parent.child=add(kind,parent.place,true);
+  add('手足支系','harbor',false);
+}
+function advance(index) {
+  if (tab!=='life') return;
+  const p=person(), event=eventFor(p), pick=event?.options[index];
+  if (!pick?.allowed) return;
+  pick.apply();
+  const nextAge=ages[state.stage+1];
+  const years=p.born+nextAge-state.year;
+  const changes=[];
+  let cashChange=0, marketChange=0;
+  for (let offset=0;offset<years;offset++) {
+    const world=cycles[Math.floor((state.year+offset-2002)/9)%cycles.length];
+    if (p.income) {
+      const cost=regions[p.place].cost+(p.partner?1:0)+(p.child&&nextAge<=54?2:0)-(p.place==='north'&&p.resident?1:0);
+      cashChange+=p.income-cost+(world.market===-3?-2:0);
+    }
+    if (p.invested) {
+      const delta=Math.round(p.invested*world.market/30);
+      p.invested=Math.max(0,p.invested+delta);
+      marketChange+=delta;
+    }
+  }
+  p.cash+=cashChange;
+  if (nextAge>=46) p.health-=Math.floor(years/2);
+  p.bond=limit(p.bond,0,100);p.health=limit(p.health,0,100);
+  if (cashChange) changes.push('期間收支 '+(cashChange>0?'+':'')+money(cashChange));
+  if (marketChange) changes.push('投資市值 '+(marketChange>0?'+':'')+money(marketChange));
+  const detail=pick.result+(changes.length?' '+changes.join('，')+'。':'');
+  addLog(p,event.title+'・'+pick.title,detail);
+  state.latest=detail;
+  state.year+=years;
+  state.stage++;
+  save();render(true);
+}
+function successors(p) {
+  return state.people.filter(other=>other.branchOf===p.id && state.year-other.born>=18);
+}
+function handoff(id) {
+  if (state.stage!==10) return;
+  const prev=person(), next=successors(prev).find(candidate=>candidate.id===id);
+  if(!next) return;
+  const own=next.parent===prev.id;
+  const rate=prev.plan==='assets'?.5:prev.plan==='culture'?.25:.15;
+  const adjusted=own?rate:rate*.75;
+  const gift=Math.floor(Math.max(0,prev.cash)*adjusted);
+  const invested=Math.floor(prev.invested*adjusted);
+  prev.cash-=gift;prev.invested-=invested;
+  next.cash=9+gift;
+  next.invested=invested;
+  next.bond=limit(Math.round(50+(prev.bond-50)*(own?.7:.4)+(prev.plan==='culture'?10:0)),0,100);
+  next.language+=prev.plan==='culture'?1:0;
+  next.resident=next.place==='north'&&prev.resident&&own;
+  if(next.resident) next.language=Math.max(next.language,2);
+  if(prev.business&&prev.plan==='assets'&&next.place===prev.place) {
+    next.business=true;prev.business=false;next.job='家族小店經營者';next.income=12;
+  }
+  prev.retired=state.year;
+  state.active=next.id;state.stage=ages.indexOf(state.year-next.born);
+  state.latest='你接續了'+prev.name+'的故事，帶著 '+money(gift)+' 資金與 '+money(invested)+' 投資來到新篇章。';
+  addLog(next,'第 '+next.generation+' 代接棒',state.latest+' 傳承方向為「'+state.legacy+'」。');
+  save();render(true);
+}
+function save() {
+  try {localStorage.setItem(KEY,JSON.stringify(state));$('save').textContent='● 自動存檔';}
+  catch {$('save').textContent='存檔空間無法使用';}
+}
+function life(p) {
+  const event=eventFor(p);
+  const result=state.latest?'<p class="result"><b>上一步</b>　'+escape(state.latest)+'</p>':'';
+  if (!event) return '<section class="card event"><div class="eyebrow">世代交棒</div><h2 tabindex="-1">故事留給誰續寫？</h2>'+result+
+    '<p>選擇下一位主角。家族紀事、世界時間和留給接棒者的資源會一起延續。</p><div class="choices">'+
+    successors(p).map((next,i)=>choice(i,next.name, next.relation+'・'+regions[next.place].name+'・'+(state.year-next.born)+' 歲','data-heir="'+next.id+'"',true)).join('')+'</div></section>';
+  return '<section class="card event"><div class="eyebrow">人生事件 · '+String(state.stage+1).padStart(2,'0')+'</div><h2 tabindex="-1">'+escape(event.title)+'</h2>'+
+    result+'<p>'+escape(event.intro)+'</p><div class="choices">'+event.options.map((pick,i)=>choice(i,pick.title,pick.hint,'data-pick="'+i+'"',pick.allowed)).join('')+'</div></section>';
+}
+function choice(index,title,hint,attribute,available) {
+  return '<button class="choice" '+attribute+(available?'':' disabled')+'><span class="key" aria-hidden="true">'+(index+1)+'</span><span><strong>'+escape(title)+'</strong><small>'+escape(hint)+(available?'':'・條件未達')+'</small></span><i aria-hidden="true">→</i></button>';
+}
+function family(p) {
+  return '<section class="card"><div class="eyebrow">家族成員</div><h2>林氏家族樹</h2><p class="muted">每一代在同一條時間線上成長。交棒時可接續直系或手足支系。</p>'+
+    state.people.map(member=>{
+      const root=state.people.find(other=>other.id===member.branchOf);
+      const label=member.id===p.id?'主角':member.retired?'已交棒':'第 '+member.generation+' 代';
+      return '<div class="person"><span class="badge">'+label+'</span><div><p><strong>'+escape(member.name)+'</strong>　'+(state.year-member.born)+' 歲</p><p class="muted">'+
+        escape(member.relation)+'・'+regions[member.place].name+(root?'・'+escape(root.name)+(member.parent?'的家庭':'的手足家系'):'')+'</p></div></div>';
+    }).join('')+'</section>';
+}
+function journal() {
+  return '<section class="card"><div class="eyebrow">共同的時間線</div><h2>家族紀事</h2>'+
+    state.log.slice().reverse().map(entry=>'<div class="log"><time>'+entry.year+'</time><div><p><strong>'+escape(entry.title)+'</strong></p><p class="muted">'+escape(entry.who+'・'+entry.detail)+'</p></div></div>').join('')+'</section>';
+}
+function atlas() {
+  return '<section class="card"><div class="eyebrow">世界圖鑑</div><h2>兩地生活</h2><p class="muted">試玩版包含兩個虛構地區。人物可以在兩地旅行、工作及遷居。</p>'+
+    Object.values(regions).map(region=>'<div class="region"><span class="badge">'+region.country+'</span><h3>'+region.name+'</h3><p>'+region.note+'</p><p class="muted">常用語言 '+region.language+'　｜　每年基本開支 '+money(region.cost)+'</p></div>').join('')+
+    '<div class="region"><h3>景氣週期</h3><p>世界每九年進入下一個景氣階段，影響工作收入與投資市值。</p></div></section>';
+}
+function render(focus=false) {
+  const p=person(), region=regions[p.place], world=climate(), age=state.year-p.born;
+  $('chapter').textContent='林氏家譜　／　第 '+p.generation+' 代　／　'+state.year+' 年';
+  $('headline').textContent=p.name+'的人生';
+  $('subtitle').textContent=state.stage===10?'選擇誰來續寫下一章。':p.generation===1&&age===0?'一切從這座港城開始。':age+' 歲・'+p.job;
+  $('place').textContent='⌖ '+region.country+'・'+region.name;
+  $('hero').classList.toggle('snow',p.place==='north');
+  document.querySelectorAll('.tab').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.tab===tab)));
+  $('content').innerHTML=({life:()=>life(p),family:()=>family(p),journal,world:atlas}[tab])();
+  const stats=[['存款',money(p.cash)],['親情',p.bond+' / 100'],['健康',p.health+' / 100'],
+    ['技能',p.skill+' 級'],['投資市值',money(p.invested)],['嶺語',p.language+' 級']];
+  $('sidebar').innerHTML='<section class="card"><div class="profile"><div class="avatar" aria-hidden="true">林</div><div><h3>'+escape(p.name)+'</h3><p>第 '+p.generation+' 代・'+age+' 歲・'+escape(p.job)+'</p></div></div><div class="stats">'+
+    stats.map(([label,value])=>'<div class="stat"><span>'+label+'</span><strong>'+value+'</strong></div>').join('')+'</div></section>'+
+    '<section class="card"><div class="world"><p class="eyebrow">世界動態</p><strong>'+world.name+'</strong></div><p class="muted">'+world.detail+'</p></section>'+
+    '<section class="card"><div class="eyebrow">家族傳承</div><h3>'+escape(state.legacy)+'</h3><p class="muted">'+state.people.length+' 位家族成員・'+state.log.length+' 筆紀事'+(p.resident?'・已取得北嶺長住資格':'')+'</p></section>';
+  if(focus) $('content').querySelector('h2')?.focus({preventScroll:true});
+}
+document.querySelector('.tabs').addEventListener('click',e=>{
+  const button=e.target.closest('[data-tab]');
+  if(button){tab=button.dataset.tab;render();}
+});
+$('content').addEventListener('click',e=>{
+  const button=e.target.closest('button');
+  if(!button)return;
+  if(button.dataset.pick!==undefined)advance(Number(button.dataset.pick));
+  if(button.dataset.heir!==undefined)handoff(Number(button.dataset.heir));
+});
+$('reset').addEventListener('click',()=>{
+  $('confirm').returnValue='cancel';
+  $('confirm').showModal();
+});
+$('confirm').addEventListener('close',()=>{
+  if($('confirm').returnValue==='reset'){state=start();tab='life';save();render(true);}
+});
+document.addEventListener('keydown',e=>{
+  if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||tab!=='life'||$('confirm').open||!['1','2','3'].includes(e.key))return;
+  const button=$('content').querySelectorAll('.choice')[Number(e.key)-1];
+  if(button&&!button.disabled)button.click();
+});
+render();
+</script>
+</body>
+</html>
+
