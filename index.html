@@ -49,19 +49,33 @@ const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;',
 const fmt = value => new Intl.NumberFormat('zh-TW').format(value);
 const limit = (n,min,max) => Math.min(max, Math.max(min,n));
 const money = n => fmt(n) + ' 萬';
+function profileDefaults(p) {
+  return {
+    upbringing:'一般家庭', interest:'尚未形成', education:p.generation>1?'地方職訓':p.job==='進修學生'?'進修課程':p.skill>=2?'實務訓練':'基礎教育',
+    contacts:p.place==='north'?1:0, studiedAbroad:false, sector:p.job.includes('技術')?'技術業':'服務業',
+    debt:Math.max(0,-p.cash), reserve:0, care:p.child?2:0,
+    trust:p.partner?65:40, conflict:0, partnerGoal:p.place==='north'?'在霜河城繼續工作':'留在青潮港照顧家人',
+    partnerHome:p.place, incidentResolved:false,
+    ...p,
+    cash:Math.max(0,p.cash)
+  };
+}
 function start() {
   return {
     version:1, year:2002, stage:0, active:1, next:2, legacy:'尚未形成', latest:'',
-    people:[{id:1, name:names[0], generation:1, born:2002, place:'harbor', cash:4, health:77,
+    people:[profileDefaults({id:1, name:names[0], generation:1, born:2002, place:'harbor', cash:4, health:77,
       bond:54, skill:0, language:0, income:0, invested:0, job:'幼年', partner:'', child:null,
-      familyTrack:'', business:false, resident:false, parent:null, relation:'創始一代'}],
+      familyTrack:'', business:false, resident:false, parent:null, relation:'創始一代'})],
     log:[{year:2002, who:names[0], title:'出生於青潮港', detail:'家族故事從嶼灣聯邦的港城開始。'}]
   };
 }
 function load() {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY));
-    if (saved?.version === 1 && saved.people?.some(person=>person.id===saved.active) && ages[saved.stage]!==undefined) return saved;
+    if (saved?.version === 1 && saved.people?.some(person=>person.id===saved.active) && ages[saved.stage]!==undefined) {
+      saved.people=saved.people.map(profileDefaults);
+      return saved;
+    }
   } catch {}
   return start();
 }
@@ -69,57 +83,106 @@ let state = load();
 let tab = 'life';
 const $ = id => document.getElementById(id);
 const person = () => state.people.find(p=>p.id===state.active);
-const climate = () => cycles[Math.floor((state.year-2002)/9)%cycles.length];
+const climate = (year=state.year) => cycles[Math.floor((year-2002)/9)%cycles.length];
+const recession = year => climate(year).market<0;
+const policy = (year=state.year) => Math.floor((year-2002)/12)%2===0
+  ? {label:'人才開放期', fee:5, network:1}
+  : {label:'資格審查期', fee:7, network:2};
+function livingCost(p, age, year) {
+  const rentPressure=p.place==='north'&&(climate(year).market===3||recession(year))?1:0;
+  return regions[p.place].cost+rentPressure+(p.partner?1:0)+(p.child&&age<54?2:0)-(p.place==='north'&&p.resident?1:0);
+}
+function charge(p,amount) {
+  const available=p.cash;
+  p.cash=Math.max(0,available-amount);
+  p.debt+=Math.max(0,amount-available);
+  p.reserve=Math.min(p.reserve,p.cash);
+}
+function changeJob(p,job,income,sector) {
+  Object.assign(p,{job,income,sector});
+}
+function move(p,destination,fee) {
+  charge(p,fee);
+  p.place=destination;
+  p.bond-=6;
+  if(p.partner&&p.partnerHome!==destination){p.trust-=12;p.conflict+=2;}
+}
 const addLog = (p,title,detail) => state.log.push({year:state.year,who:p.name,title,detail});
 const option = (title,hint,result,apply,allowed=true) => ({title,hint,result,apply,allowed});
 function eventFor(p) {
+  if(state.stage===8&&!p.incidentResolved) return disruption(p);
   switch(state.stage) {
     case 0: return {title:'家裡的第一個決定', intro:'你在港邊的一間小公寓出生。父母白天工作，祖母提議搬過來一起照顧你。這一回合由家人替你決定。', options:[
-      option('與祖母同住','親情 +14・家用 −2 萬','祖母開始帶你認識市場的鄰居，灣語也成了家中的日常。',()=>{p.bond+=14;p.cash-=2;}),
-      option('留在原來的家','家用 +3 萬・健康 +4','家人維持原本的住處，靠輪班建立一套照顧節奏。',()=>{p.cash+=3;p.health+=4;})
+      option('與祖母同住','親情 +14・家用 −2 萬','祖母開始帶你認識市場的鄰居，灣語也成了家中的日常。',()=>{p.bond+=14;charge(p,2);p.upbringing='祖母共同照顧';}),
+      option('留在原來的家','家用 +3 萬・健康 +4','家人維持原本的住處，靠輪班建立一套照顧節奏。',()=>{p.cash+=3;p.health+=4;p.upbringing='父母輪班照顧';})
     ]};
     case 1: return {title:'放學以後', intro:'市場的修理師傅願意收你當小助手，學校也剛成立合唱團。你想把放學後的時間留給什麼？', options:[
-      option('跟著師傅學手藝','技能 +2・家用 +2 萬','你第一次用自己學到的手藝幫家裡賺錢。',()=>{p.skill+=2;p.cash+=2;}),
-      option('加入學校合唱團','親情 +8・嶺語 +1','你認識會說嶺語的同學，兩個家庭開始一起過節。',()=>{p.bond+=8;p.language++;}),
-      option('留時間陪家人','親情 +12・健康 +5','你跟家人一起散步，也學會幾道只有家裡會做的料理。',()=>{p.bond+=12;p.health+=5;})
+      option('跟著師傅學手藝','技能 +2・家用 +2 萬','你第一次用自己學到的手藝幫家裡賺錢。',()=>{p.skill+=2;p.cash+=2;p.interest='修理與工程';}),
+      option('加入學校合唱團','親情 +8・嶺語 +1','你認識會說嶺語的同學，兩個家庭開始一起過節。',()=>{p.bond+=8;p.language++;p.contacts++;p.interest='音樂與語言';}),
+      option('留時間陪家人','親情 +12・健康 +5','你跟家人一起散步，也學會幾道只有家裡會做的料理。',()=>{p.bond+=12;p.health+=5;p.interest='料理與家庭';})
     ]};
-    case 2: return {title:'畢業之前', intro:'你可以準備升學、進入學徒計畫，或先留在家中幫忙。每條路都有一個不同的職涯起點。', options:[
-      option('準備升學','技能 +3・嶺語 +1・學費 3 萬','交換課程讓你開始考慮到國外生活。',()=>{p.skill+=3;p.language++;p.cash-=3;p.job='進修學生';},p.cash>=3),
-      option('加入學徒計畫','技能 +2・存款 +5 萬','你開始接案，並認識幾位同產業的前輩。',()=>{p.skill+=2;p.cash+=5;p.job='技術學徒';}),
-      option('進家裡熟悉的商會工作','親情 +10・存款 +3 萬','商會鄰居提供一份工作，你也成為家中可以倚靠的人。',()=>{p.bond+=10;p.cash+=3;p.job='商會助理';})
-    ]};
-    case 3: return {title:'第一份正式工作', intro:'港城商會和技術公司都在招人。你也可以先存錢，安排一次短期旅行。', options:[
-      option('應徵技術職','技能至少 2・年收入 12 萬','你建立專業經歷，幾年後有資格申請海外職缺。',()=>{p.job='技術專員';p.income=12;p.skill++;},p.skill>=2),
-      option('加入港城商會','年收入 9 萬・親情 +9','在商會工作讓你更了解港城的生意與人情。',()=>{p.job='商會職員';p.income=9;p.bond+=9;}),
-      option('打工並短期旅行','旅費 3 萬・嶺語 +2・年收入 8 萬','你在霜河城住了一個月，帶回一個未來可能用得上的海外聯絡方式。',()=>{p.job='自由接案';p.income=8;p.cash-=3;p.language+=2;},p.cash>=3)
-    ]};
-    case 4: return {title:'一封海外邀約', intro:'霜河城的技術公司開出新職缺。留下能繼續照應家裡，搬走則要面對房租、語言和遠距關係。', options:[
-      option('赴霜河城工作','搬遷 8 萬・需嶺語 2 或技能 3','你搭上離港的船，在霜河城開始新的工作。',()=>{p.place='north';p.cash-=8;p.income=16;p.job='海外技術員';p.bond-=10;},p.cash>=8&&(p.language>=2||p.skill>=3)),
-      option('留下並接受本地升遷','年收入 +3 萬・親情 +8','你留在港城，海外邀約成了和家人飯後聊起的一個可能。',()=>{p.income+=3;p.bond+=8;p.job='本地組長';}),
-      option('先修語言，留待下次申請','嶺語 +2・學費 3 萬','這次名額已滿，語言課讓你保留了往後移居的選擇。',()=>{p.language+=2;p.cash-=3;},p.cash>=3)
-    ]};
-    case 5: return {title:'兩個人的未來', intro:'在社群活動認識的季安與你越走越近。對方希望先談清楚彼此的工作計畫、居住地和照顧責任。', options:[
-      option('確認關係並共擬家庭計畫','親情 +12・開啟伴侶育兒路線','你和季安同意每隔幾年重新討論工作、居住與照護安排。',()=>{p.partner='季安';p.bond+=12;}),
+    case 2: {
+      const tuition=p.upbringing==='祖母共同照顧'?2:3;
+      return {title:'畢業之前', intro:'學校提供升學輔導，商會也在招收學徒。若祖母熟識的鄰居能分擔通勤與教材，升學開支就會少一些。', options:[
+        option('準備升學','學費 '+money(tuition)+'・技能 +3・開啟交換課程','你完成進修課程，有資格申請海外交換。',()=>{p.skill+=3;p.language++;charge(p,tuition);p.job='進修學生';p.education='進修課程';},p.cash>=tuition),
+        option('加入學徒計畫','技能 +2・存款 +5 萬','你取得技職訓練，也開始接案。',()=>{p.skill+=2;p.cash+=5;p.job='技術學徒';p.education='技職訓練';}),
+        option('進家裡熟悉的商會工作','親情 +10・存款 +3 萬','商會鄰居提供一份工作，你也成為家中可以倚靠的人。',()=>{p.bond+=10;p.cash+=3;p.job='商會助理';})
+      ]};
+    }
+    case 3: {
+      const exchangeFee=p.interest==='音樂與語言'?3:5;
+      return {title:'二十一歲的岔路', intro:'你可以找第一份工作、短期旅行，或用進修資格到霜河城交換。學校與旅途中建立的聯絡都可能改變日後的機會。', options:[
+        option('應徵技術職','技能至少 2・年收入 12 萬','你建立專業經歷，幾年後有資格申請海外職缺。',()=>{changeJob(p,'技術專員',12,'技術業');p.skill++;},p.skill>=2),
+        option('加入港城商會','年收入 9 萬・親情 +9','在商會工作讓你更了解港城的生意與人情。',()=>{changeJob(p,'商會職員',9,'服務業');p.bond+=9;}),
+        option('打工並短期旅行','旅費 3 萬・嶺語 +2・當地人脈 +1','你在霜河城住了一個月，認識一位能介紹當地職缺的朋友。',()=>{changeJob(p,'自由接案',8,'服務業');charge(p,3);p.language+=2;p.contacts++;},p.cash>=3),
+        option('到霜河城交換留學','需完成進修課程・交換費 '+money(exchangeFee)+'・可用助學貸款','你帶回交換學歷、嶺語與當地同學的人脈，回港後開始接案。',()=>{charge(p,exchangeFee);changeJob(p,'交換返國後接案',8,'技術業');p.studiedAbroad=true;p.education='海外交換結業';p.language+=2;p.contacts+=2;p.skill++;},p.education==='進修課程')
+      ]};
+    }
+    case 4: {
+      const movingFee=p.contacts>0?6:8;
+      const skillNeeded=recession(state.year)?4:3;
+      return {title:'一封海外邀約', intro:'霜河城的技術公司開出新職缺。有當地朋友可分擔找房成本。景氣降溫時，雇主會提高技能門檻。', options:[
+        option('赴霜河城工作','搬遷 '+money(movingFee)+(p.studiedAbroad?'・可申請搬遷貸款':'')+'・需嶺語 2 或技能 '+skillNeeded,'你搭上離港的船，在霜河城開始新的工作。',()=>{move(p,'north',movingFee);changeJob(p,'海外技術員',16,'技術業');p.bond-=4;},(p.cash>=movingFee||p.studiedAbroad)&&(p.language>=2||p.skill>=skillNeeded)),
+        option('留下並接受本地升遷','年收入 +3 萬・親情 +8','你留在港城，接下本地職位。',()=>{p.income+=3;p.bond+=8;p.job='本地組長';}),
+        option('先修語言，留待下次申請','嶺語 +2・學費 3 萬','語言課讓你保留往後移居的選擇。',()=>{p.language+=2;charge(p,3);},p.cash>=3)
+      ]};
+    }
+    case 5: return {title:'兩個人的未來', intro:'你和季安越走越近。季安現階段想「'+(p.place==='north'?'在霜河城繼續工作':'留在青潮港照顧家人')+'」，也希望雙方能一起承擔家庭照顧。', options:[
+      option('談妥生活地點，再確認關係','建立伴侶關係・信任 70・親情 +12','你們談妥現階段留在這裡，並約好遇到遷居或育兒時再一起決定。',()=>{p.partner='季安';p.partnerHome=p.place;p.partnerGoal=p.place==='north'?'在霜河城繼續工作':'留在青潮港照顧家人';p.trust=70;p.conflict=0;p.bond+=12;}),
       option('保持朋友關係','親情 +6・健康 +5','你們持續聯絡，彼此仍是遇到問題時可以商量的朋友。',()=>{p.bond+=6;p.health+=5;}),
-      option('先搬到另一座城市','搬遷 6 萬・去霜河城需嶺語 2','你把生活重心搬到另一個地區，並開始重新建立支持網絡。',()=>{p.place=p.place==='north'?'harbor':'north';p.income=p.place==='north'?15:11;p.job='跨地區職員';p.cash-=6;p.bond-=6;p.resident=p.place==='harbor'?p.resident:false;},p.cash>=6&&(p.place==='north'||p.language>=2))
+      option('先搬到另一座城市','搬遷 6 萬・去霜河城需嶺語 2','你先以自己的職涯安排為主，季安選擇留在原地。',()=>{move(p,p.place==='north'?'harbor':'north',6);changeJob(p,'跨地區職員',p.place==='north'?15:11,'服務業');},p.cash>=6&&(p.place==='north'||p.language>=2))
     ]};
-    case 6: return {title:'家裡多了一把椅子', intro:'家族裡有一位新生的晚輩。你也可以在這個階段選擇建立自己的育兒家庭。你想為接下來幾年留多少時間和金錢？', options:[
-      option('與季安一起迎接孩子','需伴侶・支出 8 萬・親情 +12','你們開始輪流照顧孩子，也重新調整工作時間。',()=>{p.cash-=8;p.bond+=12;p.income-=2;addBranch(p,'親生子女');},!!p.partner&&p.cash>=8),
-      option('申請收養並完成評估','支出 6 萬・親情 +9','你完成評估與準備，家裡多了一位新成員。',()=>{p.cash-=6;p.bond+=9;p.income--;addBranch(p,'收養子女');},p.cash>=6),
+    case 6: return {title:'家裡多了一把椅子', intro:'家族裡有一位新生的晚輩。若你也想育兒，必須考慮照顧時間。季安願意共同育兒的前提是信任充足，而且兩人已有共同生活安排。', options:[
+      option('與季安一起迎接孩子','伴侶同意・信任 60・支出 8 萬・照顧責任 +2','你們輪流育兒，也重新調整工作時間。',()=>{charge(p,8);p.bond+=12;p.trust+=5;p.income=Math.max(0,p.income-2);p.care+=2;addBranch(p,'親生子女');},!!p.partner&&p.trust>=60&&p.place===p.partnerHome&&p.cash>=8),
+      option('申請收養並完成評估','支出 6 萬・照顧責任 +2','你完成評估與準備，家裡多了一位新成員。',()=>{charge(p,6);p.bond+=9;p.income=Math.max(0,p.income-1);p.care+=2;addBranch(p,'收養子女');},p.cash>=6),
       option('照自己的節奏生活','親情 +5・家族支系仍會成長','你維持原本的生活規劃，也答應偶爾陪家裡的新生晚輩。',()=>{p.bond+=5;addBranch(p,'');})
     ]};
-    case 7: return {title:'下一筆錢怎麼用', intro:p.place==='north'?'房租和事業都需要規劃。當地開放長住申請，你也可以投資或保留現金。':'家裡有一點餘裕。你可以為突發事件保留現金、投資，或試著開一間小店。', options:[
-      option('建立緊急預備金','健康 +5・保留手上現金','你留了一筆隨時可動用的存款，也把例行健檢排進行事曆。',()=>{p.health+=5;}),
-      option('投入分散投資','投入 12 萬・市值隨景氣波動','你用部分存款建立投資部位。未來的市場變化會反映到資產。',()=>{p.cash-=12;p.invested+=12;},p.cash>=12),
-      p.place==='north'
-        ? option('申請長期居留','嶺語至少 2・有工作・費用 5 萬','你取得長住資格，日後留下的成本降低，家人也多了一條依親路線。',()=>{p.cash-=5;p.resident=true;},p.language>=2&&p.income>0&&p.cash>=5)
-        : option('創立家族小店','投入 15 萬・年收入 +3 萬','小店開始營運，接手家族的人日後可以選擇延續它。',()=>{p.cash-=15;p.income+=3;p.business=true;p.job='小店經營者';},p.cash>=15)
-    ]};
-    case 8: return {title:'來自老家的電話', intro:'一位長輩住院，接下來需要有人安排照護。此時世界正處於「'+climate().name+'」，工作與存款會影響你能怎麼分擔。', options:[
-      option('減少工時，親自分擔照護','年收入 −3 萬・親情 +18','你增加陪伴時間，親族也更願意在下一次遷居時幫忙。',()=>{p.income=Math.max(0,p.income-3);p.bond+=18;p.familyTrack='親自照護';}),
-      option('出資聘請照護人員','支出 14 萬・親情 +8','照護安排穩定下來，你也能維持目前的職涯節奏。',()=>{p.cash-=14;p.bond+=8;p.familyTrack='共同出資照護';},p.cash>=14),
-      option('與親族協調輪班','健康 −7・親情 +10','大家重新分工。這段時間比較累，但家人因此建立了共同照護的方式。',()=>{p.health-=7;p.bond+=10;p.familyTrack='親族輪班照護';})
-    ]};
+    case 7: {
+      const rules=policy();
+      const studyRoute=p.studiedAbroad&&p.contacts>=rules.network;
+      const workRoute=p.income>=12&&p.language>=2;
+      const repayment=Math.min(p.cash,p.debt);
+      return {title:'下一筆錢怎麼用', intro:p.place==='north'?'霜河城進入「'+rules.label+'」。長住申請可走工作或留學人脈途徑，手上的資金也能留作緊急用途。':'你可以保留現金、投資、開店，或優先清償負債。', options:[
+        option('建立緊急預備金','最多保留 12 萬・降低突發開支・健康 +5','你預留隨時可動用的存款，並安排例行健檢。',()=>{p.reserve=Math.min(12,p.cash);p.health+=5;}),
+        option('投入分散投資','投入 12 萬・市值隨景氣波動','你建立投資部位，未來的市場變化會反映到資產。',()=>{charge(p,12);p.invested+=12;},p.cash>=12),
+        p.place==='north'
+          ? option('申請長期居留','費用 '+money(rules.fee)+'・工作及嶺語 2，或交換學歷及人脈 '+rules.network,'你透過'+(studyRoute?'留學':'工作')+'途徑取得長住資格，住房成本也因此降低。',()=>{charge(p,rules.fee);p.resident=true;},!p.resident&&(workRoute||studyRoute)&&p.cash>=rules.fee)
+          : option('創立家族小店','投入 15 萬・年收入 +3 萬','小店開始營運，後輩日後可以選擇延續它。',()=>{charge(p,15);changeJob(p,'小店經營者',p.income+3,'零售業');p.business=true;},!p.business&&p.cash>=15),
+        option('優先還債','可償還 '+money(repayment)+'・降低未來利息','你把可動用的現金拿來降低負債。',()=>{charge(p,repayment);p.debt-=repayment;},repayment>0)
+      ]};
+    }
+    case 8: {
+      const destination=p.place==='north'?'harbor':'north';
+      const careFee=p.care>=2?6:0;
+      const fee=(p.bond>=70?5:9)+careFee;
+      const companionAgrees=!p.partner||p.partnerHome===destination||(p.trust>=75&&p.conflict<2);
+      return {title:'來自老家的電話', intro:'長輩出院後仍需安排照護。跨城搬家要先安頓現有照顧責任。'+(p.partner?(companionAgrees?'季安同意這次遷居。':'季安想「'+p.partnerGoal+'」，目前沒有同意遷居。'):''), options:[
+        option('減少工時，親自分擔照護','年收入最多 −3 萬・照顧責任 +2・親情 +18','你調整工時，把更多時間留給家人。',()=>{p.income=Math.max(0,p.income-3);p.bond+=18;p.care+=2;p.familyTrack='親自照護';}),
+        option('出資聘請照護人員','支出 14 萬・維持工時・親情 +8','照護安排穩定下來，你也能維持目前的職涯節奏。',()=>{charge(p,14);p.bond+=8;p.familyTrack='共同出資照護';},p.cash>=14),
+        option('與親族協調輪班','健康 −7・親情 +10・伴侶信任 +6','大家重新分工，伴侶也看見你願意協調照顧責任。',()=>{p.health-=7;p.bond+=10;if(p.partner)p.trust+=6;p.familyTrack='親族輪班照護';}),
+        option('安頓照護後遷居','搬遷 '+money(fee)+'・需伴侶同意'+(careFee?'・含 6 萬照護安排':'')+(destination==='north'?'及嶺語 2':''),'你和親族商定分工，再到'+regions[destination].name+'開始新的生活。',()=>{if(p.partner)p.partnerHome=destination;move(p,destination,fee);changeJob(p,'異地職員',destination==='north'?13:10,'服務業');p.familyTrack='跨城共同照護';},companionAgrees&&p.cash>=fee&&(destination==='harbor'||p.language>=2))
+      ]};
+    }
     case 9: return {title:'準備交棒', intro:p.business?'小店已經成為鄰里熟悉的地方。你想把哪些東西留給接下來的人？':'你開始整理自己的財務、文件與家中老照片。你想讓下一代從哪裡接續？', options:[
       option('整理財產與事業交接','交棒時轉移 50% 現金及投資，可承接小店','你留下清楚的資產紀錄與交接文件。',()=>{p.plan='assets';state.legacy='資產與事業';}),
       option('留下語言與生活故事','交棒時轉移 25% 現金及投資，增加語言與親情','你和家人一起把口述故事、菜譜和家族稱呼記錄下來。',()=>{p.plan='culture';state.legacy='語言與家庭故事';}),
@@ -131,10 +194,11 @@ function eventFor(p) {
 function addBranch(parent, kind) {
   function add(relation, place, linked) {
     const id=state.next++;
-    const descendant={id,name:names[(id-1)%names.length],generation:parent.generation+1,born:state.year,
+    const descendant=profileDefaults({id,name:names[(id-1)%names.length],generation:parent.generation+1,born:state.year,
       place,cash:0,health:76,bond:50,skill:2,language:place==='north'?2:1,income:9,invested:0,
       job:'地方職員',partner:'',child:null,familyTrack:'',business:false,resident:place==='north'&&parent.resident,
-      parent:linked?parent.id:null, branchOf:parent.id, relation};
+      parent:linked?parent.id:null, branchOf:parent.id, relation});
+    if(linked){descendant.upbringing=kind==='收養子女'?'收養家庭':'雙親共同照顧';descendant.contacts=Math.min(2,parent.contacts);}
     state.people.push(descendant);
     addLog(descendant, relation==='手足支系'?'手足家中迎來新生兒':'加入家庭', regions[place].name+'・'+relation);
     return id;
@@ -142,32 +206,64 @@ function addBranch(parent, kind) {
   if (kind) parent.child=add(kind,parent.place,true);
   add('手足支系','harbor',false);
 }
+function disruption(p) {
+  const downturn=Array.from({length:8},(_,offset)=>state.year-offset).some(recession);
+  if(downturn&&!p.business&&p.income>0) {
+    return {title:'公司宣布縮編', intro:'景氣低迷使公司裁減你的職位。現金和在地人脈會影響求職選擇。', options:[
+      option('留一段時間找專業工作','待業支出 12 萬・技能至少 3','你用存款撐過待業期，找到能延續原有經驗的職缺。',()=>{charge(p,12);changeJob(p,'轉職後的專員',13,p.sector);},p.cash>=12&&p.skill>=3),
+      option('先接短工維持收入','年收入 7 萬・無求職費','你先接受短工，收入不足時可能需要借款。',()=>{changeJob(p,'短期工作者',7,'服務業');}),
+      option('請在地朋友介紹工作','霜河城・人脈至少 2・年收入 12 萬','朋友把你介紹給仍在招人的雇主。',()=>{changeJob(p,'社群推薦職員',12,'技術業');},p.place==='north'&&p.contacts>=2),
+      option('用存款支付轉職進修','學費與生活費 16 萬・技能 +2','你完成轉職課程，進入新產業。',()=>{charge(p,16);p.skill+=2;p.education='轉職進修結業';changeJob(p,'轉職後的技術員',11,'技術業');},p.cash>=16)
+    ]};
+  }
+  const fee=p.reserve>=8?6:10;
+  return {title:'突來的健康開支', intro:'你在途中受傷。先前準備的緊急預備金可以減少延誤治療的開支。', options:[
+    option('接受完整治療','支出 '+money(fee)+'・可分期・健康 +4','你安排完整治療，現金不足時由醫療分期支付。',()=>{p.reserve=Math.max(0,p.reserve-fee);charge(p,fee);p.health+=4;}),
+    option('暫時縮減工時休養','年收入最多 −2 萬・健康 −4','你降低工作量，給自己更多休養時間。',()=>{p.income=Math.max(0,p.income-2);p.health-=4;}),
+    option('維持工時並請家人支援','健康 −9・親情至少 65・若有伴侶，信任 −8','家人接手部分家務。若有伴侶，額外負擔也帶來摩擦。',()=>{p.health-=9;p.bond-=5;if(p.partner){p.trust-=8;p.conflict+=2;}},p.bond>=65)
+  ]};
+}
 function advance(index) {
   if (tab!=='life') return;
   const p=person(), event=eventFor(p), pick=event?.options[index];
   if (!pick?.allowed) return;
   pick.apply();
+  p.bond=limit(p.bond,0,100);
+  p.trust=limit(p.trust,0,100);
+  p.health=limit(p.health,0,100);
+  if(state.stage===8&&!p.incidentResolved){
+    p.incidentResolved=true;
+    state.latest=pick.result;
+    addLog(p,event.title+'・'+pick.title,state.latest);
+    save();render(true);
+    return;
+  }
   const nextAge=ages[state.stage+1];
   const years=p.born+nextAge-state.year;
   const changes=[];
-  let cashChange=0, marketChange=0;
+  const priorCash=p.cash, priorDebt=p.debt, priorInvestment=p.invested;
+  let downturnYears=0;
   for (let offset=0;offset<years;offset++) {
-    const world=cycles[Math.floor((state.year+offset-2002)/9)%cycles.length];
-    if (p.income) {
-      const cost=regions[p.place].cost+(p.partner?1:0)+(p.child&&nextAge<=54?2:0)-(p.place==='north'&&p.resident?1:0);
-      cashChange+=p.income-cost+(world.market===-3?-2:0);
+    const year=state.year+offset, age=year-p.born;
+    const world=climate(year);
+    if(age>=21) {
+      const loss=recession(year)?(p.sector==='技術業'?3:2):0;
+      if(loss)downturnYears++;
+      const surplus=p.income-livingCost(p,age,year)-loss;
+      if(surplus>=0)p.cash+=surplus;
+      else charge(p,-surplus);
+      if(p.debt>0)p.debt+=Math.ceil(p.debt*.03);
     }
-    if (p.invested) {
+    if(p.invested>0) {
       const delta=Math.round(p.invested*world.market/30);
       p.invested=Math.max(0,p.invested+delta);
-      marketChange+=delta;
     }
   }
-  p.cash+=cashChange;
-  if (nextAge>=46) p.health-=Math.floor(years/2);
-  p.bond=limit(p.bond,0,100);p.health=limit(p.health,0,100);
-  if (cashChange) changes.push('期間收支 '+(cashChange>0?'+':'')+money(cashChange));
-  if (marketChange) changes.push('投資市值 '+(marketChange>0?'+':'')+money(marketChange));
+  if(nextAge>=46)p.health=limit(p.health-Math.floor(years/2),0,100);
+  if(nextAge===54&&p.child)p.care=Math.max(0,p.care-2);
+  const deltas=[['現金',p.cash-priorCash],['負債',p.debt-priorDebt],['投資市值',p.invested-priorInvestment]];
+  for(const [label,delta] of deltas)if(delta)changes.push(label+' '+(delta>0?'+':'')+money(delta));
+  if(downturnYears)changes.push('其中 '+downturnYears+' 年受景氣降溫影響');
   const detail=pick.result+(changes.length?' '+changes.join('，')+'。':'');
   addLog(p,event.title+'・'+pick.title,detail);
   state.latest=detail;
@@ -185,7 +281,13 @@ function handoff(id) {
   const own=next.parent===prev.id;
   const rate=prev.plan==='assets'?.5:prev.plan==='culture'?.25:.15;
   const adjusted=own?rate:rate*.75;
-  const gift=Math.floor(Math.max(0,prev.cash)*adjusted);
+  const repayment=Math.min(prev.cash,prev.debt);
+  charge(prev,repayment);
+  prev.debt-=repayment;
+  const sale=Math.min(prev.invested,prev.debt);
+  prev.invested-=sale;
+  prev.debt-=sale;
+  const gift=Math.floor(prev.cash*adjusted);
   const invested=Math.floor(prev.invested*adjusted);
   prev.cash-=gift;prev.invested-=invested;
   next.cash=9+gift;
@@ -195,7 +297,7 @@ function handoff(id) {
   next.resident=next.place==='north'&&prev.resident&&own;
   if(next.resident) next.language=Math.max(next.language,2);
   if(prev.business&&prev.plan==='assets'&&next.place===prev.place) {
-    next.business=true;prev.business=false;next.job='家族小店經營者';next.income=12;
+    next.business=true;prev.business=false;changeJob(next,'家族小店經營者',12,'零售業');
   }
   prev.retired=state.year;
   state.active=next.id;state.stage=ages.indexOf(state.year-next.born);
@@ -211,7 +313,7 @@ function life(p) {
   const event=eventFor(p);
   const result=state.latest?'<p class="result"><b>上一步</b>　'+escape(state.latest)+'</p>':'';
   if (!event) return '<section class="card event"><div class="eyebrow">世代交棒</div><h2 tabindex="-1">故事留給誰續寫？</h2>'+result+
-    '<p>選擇下一位主角。家族紀事、世界時間和留給接棒者的資源會一起延續。</p><div class="choices">'+
+    '<p>選擇下一位主角。家族紀事和世界時間會延續。資產先清償上一代的債務，再依交棒安排分配。</p><div class="choices">'+
     successors(p).map((next,i)=>choice(i,next.name, next.relation+'・'+regions[next.place].name+'・'+(state.year-next.born)+' 歲','data-heir="'+next.id+'"',true)).join('')+'</div></section>';
   return '<section class="card event"><div class="eyebrow">人生事件 · '+String(state.stage+1).padStart(2,'0')+'</div><h2 tabindex="-1">'+escape(event.title)+'</h2>'+
     result+'<p>'+escape(event.intro)+'</p><div class="choices">'+event.options.map((pick,i)=>choice(i,pick.title,pick.hint,'data-pick="'+i+'"',pick.allowed)).join('')+'</div></section>';
@@ -235,7 +337,7 @@ function journal() {
 function atlas() {
   return '<section class="card"><div class="eyebrow">世界圖鑑</div><h2>兩地生活</h2><p class="muted">試玩版包含兩個虛構地區。人物可以在兩地旅行、工作及遷居。</p>'+
     Object.values(regions).map(region=>'<div class="region"><span class="badge">'+region.country+'</span><h3>'+region.name+'</h3><p>'+region.note+'</p><p class="muted">常用語言 '+region.language+'　｜　每年基本開支 '+money(region.cost)+'</p></div>').join('')+
-    '<div class="region"><h3>景氣週期</h3><p>世界每九年進入下一個景氣階段，影響工作收入與投資市值。</p></div></section>';
+    '<div class="region"><h3>景氣週期</h3><p>景氣每九年切換一次，會影響薪資、技術職門檻、房租與投資。霜河城長住政策每十二年切換一次。</p></div></section>';
 }
 function render(focus=false) {
   const p=person(), region=regions[p.place], world=climate(), age=state.year-p.born;
@@ -246,11 +348,14 @@ function render(focus=false) {
   $('hero').classList.toggle('snow',p.place==='north');
   document.querySelectorAll('.tab').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.tab===tab)));
   $('content').innerHTML=({life:()=>life(p),family:()=>family(p),journal,world:atlas}[tab])();
-  const stats=[['存款',money(p.cash)],['親情',p.bond+' / 100'],['健康',p.health+' / 100'],
-    ['技能',p.skill+' 級'],['投資市值',money(p.invested)],['嶺語',p.language+' 級']];
+  const stats=[['存款',money(p.cash)],['負債',money(p.debt)],['年收入',money(p.income)],['生活支出／年',money(livingCost(p,age,state.year))],
+    ['投資市值',money(p.invested)],['緊急預備金',money(p.reserve)],['健康',p.health+' / 100'],['親情',p.bond+' / 100'],
+    ['技能',p.skill+' 級'],['嶺語',p.language+' 級'],['霜河城人脈',p.contacts+' 位'],['照顧責任',p.care+' 級']];
+  const background=[p.upbringing,p.interest,p.education].join('・');
+  const relationship=p.partner?p.partner+'・信任 '+p.trust+'／100・衝突 '+p.conflict+' 級':'';
   $('sidebar').innerHTML='<section class="card"><div class="profile"><div class="avatar" aria-hidden="true">林</div><div><h3>'+escape(p.name)+'</h3><p>第 '+p.generation+' 代・'+age+' 歲・'+escape(p.job)+'</p></div></div><div class="stats">'+
-    stats.map(([label,value])=>'<div class="stat"><span>'+label+'</span><strong>'+value+'</strong></div>').join('')+'</div></section>'+
-    '<section class="card"><div class="world"><p class="eyebrow">世界動態</p><strong>'+world.name+'</strong></div><p class="muted">'+world.detail+'</p></section>'+
+    stats.map(([label,value])=>'<div class="stat"><span>'+label+'</span><strong>'+value+'</strong></div>').join('')+'</div><p class="muted" style="margin-top:10px">'+escape(background)+'</p>'+(relationship?'<p class="muted">'+escape(relationship)+'</p>':'')+'</section>'+
+    '<section class="card"><div class="world"><p class="eyebrow">世界動態</p><strong>'+world.name+'</strong></div><p class="muted">'+world.detail+'　霜河城目前為「'+policy().label+'」。</p></section>'+
     '<section class="card"><div class="eyebrow">家族傳承</div><h3>'+escape(state.legacy)+'</h3><p class="muted">'+state.people.length+' 位家族成員・'+state.log.length+' 筆紀事'+(p.resident?'・已取得北嶺長住資格':'')+'</p></section>';
   if(focus) $('content').querySelector('h2')?.focus({preventScroll:true});
 }
@@ -272,7 +377,7 @@ $('confirm').addEventListener('close',()=>{
   if($('confirm').returnValue==='reset'){state=start();tab='life';save();render(true);}
 });
 document.addEventListener('keydown',e=>{
-  if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||tab!=='life'||$('confirm').open||!['1','2','3'].includes(e.key))return;
+  if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||tab!=='life'||$('confirm').open||!['1','2','3','4'].includes(e.key))return;
   const button=$('content').querySelectorAll('.choice')[Number(e.key)-1];
   if(button&&!button.disabled)button.click();
 });
